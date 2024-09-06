@@ -1,0 +1,6624 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type AbandonedCartFlow {
+  authorizedAppId: String
+  campaignId: String
+  canApplicable: Boolean!
+  couponId: String
+  customerFilters: AbandonedCartFlowCustomerFilter
+  flowId: String!
+  mailSendDate: Timestamp
+  mailTranslationId: String
+  messageType: AbandonedCartSettingsNotificationTypeEnum
+  recoverEmailStatus: CheckoutRecoveryEmailStatusEnum!
+  sendAfter: Float!
+  smsTranslationId: String
+}
+
+type AbandonedCartFlowCustomerFilter {
+  sendOnlyActiveAccount: Boolean
+  sendOnlySubscribedToEmail: Boolean
+}
+
+enum AbandonedCartSettingsNotificationTypeEnum {
+  EMAIL
+  SMS
+}
+
+input AddCouponsInput {
+  campaignId: String!
+  coupons: [NewCouponInput!]
+  generateCoupons: GenerateCouponInput
+}
+
+input AddOrderInvoiceInput {
+  """It is the app id  for which the invoice is issued."""
+  appId: String!
+  """
+  It is the content of invoice. Is the entered value must be in base64 format.
+  """
+  base64: String
+  """'It is data for create invoice."""
+  invoiceData: JSON
+  """It is the number of the order invoice."""
+  invoiceNumber: String!
+  """
+  It is the order id for which the invoice is issued.
+   * Is the entered id must be exist in ikas.
+  """
+  orderId: String!
+  """
+  If the customer is to be informed after the invoice information is saved, this field can be sent as "true".
+  """
+  sendNotificationToCustomer: Boolean!
+  """It is the type enum of the invoice."""
+  type: InvoiceTypeEnum!
+}
+
+type AdditionalPrice {
+  amount: Float!
+  amountType: PaymentGatewayTransactionFeeTypeEnum!
+  name: String!
+  type: PaymentGatewayAdditionalPriceTypeEnum!
+}
+
+"""Scope Enum for Apps"""
+enum AppScopeEnum {
+  READ_CAMPAIGNS
+  READ_CUSTOMERS
+  READ_INVENTORIES
+  READ_ORDERS
+  READ_PRODUCTS
+  WRITE_CAMPAIGNS
+  WRITE_CUSTOMERS
+  WRITE_INVENTORIES
+  WRITE_ORDERS
+  WRITE_PRODUCTS
+  WRITE_STOREFRONT
+}
+
+input ApproveOrderTransactionsInput {
+  orderId: String!
+  paymentMethods: [PaymentMethodTypeEnum!]
+}
+
+type AuthorizedApp {
+  """The date the app was added."""
+  addedDate: Timestamp!
+  createdAt: Timestamp
+  deleted: Boolean!
+  id: ID!
+  partnerId: String!
+  """The id of the sales channel owned by the merchant."""
+  salesChannelId: String
+  scope: String!
+  """The application's id in the store."""
+  storeAppId: String!
+  """
+  It keeps the information that a merchant cn install more than one application. If `true`, merchant can add more than one application.
+  """
+  supportsMultipleInstallation: Boolean
+  updatedAt: Timestamp
+}
+
+type AvailableShippingMethod {
+  estimatedDeliveryTime: LocalDeliverySettingsDayEstimatedDeliveryTime
+  price: Float!
+  rateName: String!
+  shippingMethod: OrderShippingMethodEnum!
+  shippingSettingsId: String!
+  shippingZoneRateId: String!
+}
+
+input BooleanFilterInput {
+  """`equal`. The filter used for equality."""
+  eq: Boolean
+}
+
+type Branch {
+  address: BranchAddress!
+  createdAt: Timestamp
+  deleted: Boolean!
+  favoriteItems: [BranchFavoriteItem!]
+  id: ID!
+  name: String!
+  salesChannelId: String!
+  settings: BranchSettings
+  updatedAt: Timestamp
+}
+
+type BranchAddress {
+  address: String!
+  city: BranchAddressCity!
+  country: BranchAddressCountry!
+  district: BranchAddressDistrict
+  phone: String
+  postalCode: String!
+  state: BranchAddressState
+}
+
+type BranchAddressCity {
+  code: String
+  id: String
+  name: String!
+}
+
+type BranchAddressCountry {
+  code: String
+  id: String
+  name: String!
+}
+
+type BranchAddressDistrict {
+  code: String
+  id: String
+  name: String
+}
+
+type BranchAddressState {
+  code: String
+  id: String
+  name: String
+}
+
+type BranchFavoriteItem {
+  order: Float!
+  targetId: String!
+  targetParentId: String!
+  type: BranchFavoriteTypeEnum!
+}
+
+enum BranchFavoriteTypeEnum {
+  CATEGORY
+  DISCOUNT
+  PRODUCT
+  VARIANT
+}
+
+type BranchSettings {
+  customerRequirement: BranchSettingsRequirementEnum
+  gridLayout: BranchSettingsGridLayoutEnum
+  hideOutOfStockProducts: Boolean
+  lockTime: Float
+  pinRequirement: BranchSettingsRequirementEnum
+  sellOutOfStockProducts: Boolean
+}
+
+enum BranchSettingsGridLayoutEnum {
+  FOUR_FIVE
+  THREE_FOUR
+  TWO_EIGHT
+}
+
+enum BranchSettingsRequirementEnum {
+  MANDATORY
+  OPTIONAL
+}
+
+input BulkUpdateProductBrandInput {
+  """Description of the brand."""
+  description: String
+  """Image id of brand."""
+  imageId: String
+  """Name of the brand."""
+  name: String!
+}
+
+input BulkUpdateProductCategoryInput {
+  """Name of the category."""
+  name: [String!]!
+}
+
+input BulkUpdateProductHTMLMetaDataInput {
+  """Canonical URL list of entity."""
+  canonicals: [String!]
+  """Description of the product in HTML metadata."""
+  description: String
+  """Defines if the entity is not indexable by search engines"""
+  disableIndex: Boolean
+  id: String!
+  """Metadata overrides for the product"""
+  metadataOverrides: [BulkUpdateProductHTMLMetaDataOverrideInput!]
+  """Page title for the product"""
+  pageTitle: String
+  """Redirect URL for the product."""
+  redirectTo: String
+  """Slug of the product"""
+  slug: String!
+  """Target of HTML metadata."""
+  target: String
+  """Target type for HTML metadata."""
+  targetType: String
+}
+
+input BulkUpdateProductHTMLMetaDataOverrideInput {
+  """Description of the product in HTML metadata."""
+  description: String!
+  """Language metadata for the product."""
+  language: String
+  """Page title for the product"""
+  pageTitle: String!
+}
+
+input BulkUpdateProductImageInput {
+  """URL of the image"""
+  imageUrl: String!
+  """Whether the image is main image for the product or not."""
+  isMain: Boolean!
+  """True if this the media type is video"""
+  isVideo: Boolean
+  """Order of the product image."""
+  order: Float!
+}
+
+input BulkUpdateProductPriceInput {
+  """Buy price of product."""
+  buyPrice: Float
+  """Currency code for the price of product."""
+  currencyCode: String
+  """Discount price of product."""
+  discountPrice: Float
+  """Id of the price list that the product belongs to."""
+  priceListId: String
+  """Sell price of product."""
+  sellPrice: Float!
+}
+
+input BulkUpdateProductSalesChannels {
+  """Sales channels id for bulk update."""
+  id: String!
+  """Max purchasable quantity of the sales channel for per cart."""
+  maxQuantityPerCart: Float
+  """Min purchasable quantity of the sales channel for per cart."""
+  minQuantityPerCart: Float
+  quantitySettings: [Float!]
+  """Sales channels id for bulk update."""
+  status: SalesChannelStatusEnum
+}
+
+input BulkUpdateProductStockInput {
+  """Number of available items in the stock location."""
+  stockCount: Float!
+  """Id of the stock location."""
+  stockLocationId: String!
+}
+
+input BulkUpdateProductTagInput {
+  """Name of the product tag."""
+  name: String!
+}
+
+input BulkUpdateProductVariantInput {
+  """List of barcode for the variant."""
+  barcodeList: [String!]
+  """Whether the variant is deleted or not"""
+  deleted: Boolean!
+  """Source id for variant."""
+  hsCode: String
+  id: String
+  """List of images for variant."""
+  images: [BulkUpdateProductImageInput!]
+  """Whether the variant is active or not."""
+  isActive: Boolean!
+  """List of prices for the variant."""
+  prices: [BulkUpdateProductPriceInput!]!
+  """SKU of the variant."""
+  sku: String
+  """Source id for variant."""
+  sourceId: String
+  """List of stocks for the variant."""
+  stocks: [BulkUpdateProductStockInput!]
+  """List of variant values."""
+  variantValues: [BulkUpdateProductVariationValueRelationInput!]
+  """Weight of the variant."""
+  weight: Float
+}
+
+input BulkUpdateProductVariantTypeImportInput {
+  """Order of the variant type."""
+  order: Float!
+  """Name of variant type."""
+  variantTypeName: String
+  """List of variant values."""
+  variantValues: [BulkUpdateProductVariantValueImportInput!]!
+}
+
+input BulkUpdateProductVariantValueImportInput {
+  """Hex color code for the variant value."""
+  colorCode: String
+  """Name of the variant value."""
+  name: String!
+  """Source id for variant value."""
+  sourceId: String
+  """Thumbnail image url for the variant value."""
+  thumbnailImageUrl: String
+}
+
+input BulkUpdateProductVariationValueRelationInput {
+  """Name of variant type."""
+  variantTypeName: String!
+  """Name of the variant value."""
+  variantValueName: String!
+}
+
+input BulkUpdateProductsInput {
+  """Brand of the product."""
+  brand: BulkUpdateProductBrandInput
+  """List of categories of the product."""
+  categories: [BulkUpdateProductCategoryInput!]!
+  """Whether the product is deleted or not"""
+  deleted: Boolean!
+  """Description of the product."""
+  description: String
+  """Product Google Categories"""
+  googleTaxonomyId: String
+  id: String
+  """Max purchasable quantity of the product for per cart."""
+  maxQuantityPerCart: Float
+  """HTML Metadata identifier of the product."""
+  metaData: BulkUpdateProductHTMLMetaDataInput
+  """Name of the product"""
+  name: String!
+  """Variant types of the product."""
+  productVariantTypes: [BulkUpdateProductVariantTypeImportInput!]!
+  """Sales channel ids for bulk update."""
+  salesChannelIds: [String!]
+  """Sales channels for bulk update."""
+  salesChannels: [BulkUpdateProductSalesChannels!]
+  """Short description of the product."""
+  shortDescription: String
+  """Source id for bulk update."""
+  sourceId: String
+  """List of product tags."""
+  tags: [BulkUpdateProductTagInput!]
+  """Type of the product."""
+  type: ProductTypeEnum!
+  """List of product variants."""
+  variants: [BulkUpdateProductVariantInput!]!
+  """Vendor of the product."""
+  vendor: String
+  """Weight of the product."""
+  weight: Float
+}
+
+input BundleProductInput {
+  addToBundleBasePrice: Boolean
+  discountRatio: Float
+  filteredVariantIds: [String!]!
+  id: String!
+  maxQuantity: Float
+  minQuantity: Float
+  order: Float!
+  productId: String!
+  quantity: Float!
+}
+
+type BundleProductModel {
+  """
+  The setting that specifies whether the prices of the products to be added to the bundle product will be added to the base price of the bundle. If this setting is selected, the sales prices of the products in the bundle product are included on the bundle price.
+  """
+  addToBundleBasePrice: Boolean
+  """
+  The discount rate that will be applied specifically to the product to be added to the bundle product. If the addToBundleBasePrice setting is selected, the discount is applied.
+  """
+  discountRatio: Float
+  """
+  Selectable variant ids of the product that can be included in the bundle product.
+  """
+  filteredVariantIds: [String!]!
+  id: String!
+  """
+  Maximum quantity of product that can be included in the bundle product.
+  """
+  maxQuantity: Float
+  """
+  Minimum quantity of product that can be included in the bundle product.
+  """
+  minQuantity: Float
+  """Order of the product that can be included in the bundle product."""
+  order: Float!
+  """Id of the product that can be included in the bundle product."""
+  productId: String!
+  """Quantity of the product that can be included in the bundle product."""
+  quantity: Float!
+}
+
+type BundleProductOrderLine {
+  """
+  If the order line is derived from a package product, it shows the bundle line id of the package product
+  """
+  bundleLineId: String!
+  """
+  If the order line is derived from a package product, it shows the bundle line id of the package product
+  """
+  bundleLineQuantity: Float!
+  """
+  If the order line is derived from a package product, it shows the bundle product name of the package product
+  """
+  name: String
+  """
+  It is the option information of the variant value in the order line item.
+  """
+  options: [OrderLineOption!]
+  """Information about the variant of the order line item."""
+  variant: OrderLineVariant!
+}
+
+input BundleProductOrderLineInput {
+  """It is the bundle product line id the bundle line item."""
+  bundleLineId: String!
+  """It is the bundle product line id the bundle line item."""
+  bundleLineQuantity: Float!
+  """It is the bundle product name the bundle line item."""
+  name: String
+  """It is the options information in the bundle line item."""
+  options: [OrderLineOptionInput!]
+  """It is the variant information in the bundle line item."""
+  variant: OrderLineVariantInput!
+}
+
+input BundleSettingsInput {
+  maxBundleQuantity: Float
+  minBundleQuantity: Float
+  products: [BundleProductInput!]!
+}
+
+type BundleSettingsModel {
+  """Maximum quantity of products that can be in the bundle product."""
+  maxBundleQuantity: Float
+  """Minimum quantity of products that can be in the bundle product."""
+  minBundleQuantity: Float
+  """List of products that can be included in the bundle product."""
+  products: [BundleProductModel!]!
+}
+
+type BuyX {
+  amount: Float!
+  applyByQuantity: Boolean!
+  filter: CampaignFilter!
+  maxAmount: Float
+}
+
+input BuyXInput {
+  amount: Float!
+  applyByQuantity: Boolean!
+  filter: CampaignFilterInput!
+  maxAmount: Float
+}
+
+type BuyXThenGetY {
+  buyX: BuyX!
+  getY: GetY!
+  maxUsagePerOrder: Int
+}
+
+input BuyXThenGetYInput {
+  buyX: BuyXInput!
+  getY: GetYInput!
+  maxUsagePerOrder: Int
+}
+
+type Campaign {
+  applicableCustomerGroupIds: [String!]
+  applicableCustomerIds: [String!]
+  applicableCustomerSegmentIds: [String!]
+  applicablePrice: CampaignApplicablePriceEnum!
+  applyCampaignToProductPrice: Boolean
+  buyXThenGetY: BuyXThenGetY
+  canCombineWithOtherCampaigns: Boolean!
+  couponPrefix: String
+  couponValidityPeriod: Float
+  createdAt: Timestamp
+  createdFor: CampaignCreatedForEnum
+  currencyCodes: [String!]
+  dateRange: CampaignDateRangeField
+  deleted: Boolean!
+  fixedDiscount: FixedDiscount
+  hasCoupon: Boolean!
+  id: ID!
+  includeDiscountedProducts: Boolean
+  isFreeShipping: Boolean
+  onlyUseCustomer: Boolean
+  salesChannelIds: [String!]
+  tieredDiscount: CampaignTieredDiscount
+  title: String!
+  translations: [CampaignTranslation!]
+  type: CampaignTypeEnum!
+  updatedAt: Timestamp
+  usageCount: Int!
+  usageLimit: Int
+  usageLimitPerCustomer: Int
+  version: Float
+}
+
+enum CampaignApplicablePriceEnum {
+  DISCOUNT_PRICE
+  SELL_PRICE
+}
+
+enum CampaignCreatedForEnum {
+  ABANDONED_CHECKOUT
+  CART
+  CUSTOMER_REVIEW
+  MARKETING_CAMPAIGN
+}
+
+type CampaignDateRangeField {
+  end: Timestamp
+  start: Timestamp
+}
+
+input CampaignDateRangeFieldInput {
+  end: Timestamp
+  start: Timestamp
+}
+
+type CampaignFilter {
+  idList: [String!]!
+  type: CampaignFilterTypeEnum!
+}
+
+input CampaignFilterInput {
+  idList: [String!]!
+  type: CampaignFilterTypeEnum!
+}
+
+enum CampaignFilterTypeEnum {
+  CATEGORY
+  DYNAMIC_CATEGORY
+  PRODUCT
+  PRODUCT_AND_VARIANT
+  PRODUCT_BRAND
+  PRODUCT_TAG
+  VARIANT
+}
+
+enum CampaignGetYDiscountTypeEnum {
+  AMOUNT
+  FIXED_PRODUCT_PRICE
+  RATIO
+}
+
+input CampaignInput {
+  applicableCustomerGroupIds: [String!]
+  applicableCustomerIds: [String!]
+  applicableCustomerSegmentIds: [String!]
+  applicablePrice: CampaignApplicablePriceEnum!
+  applyCampaignToProductPrice: Boolean
+  buyXThenGetY: BuyXThenGetYInput
+  canCombineWithOtherCampaigns: Boolean!
+  couponPrefix: String
+  couponValidityPeriod: Float
+  createdAt: Timestamp
+  createdFor: CampaignCreatedForEnum
+  currencyCodes: [String!]
+  dateRange: CampaignDateRangeFieldInput
+  deleted: Boolean = false
+  fixedDiscount: FixedDiscountInput
+  hasCoupon: Boolean!
+  id: ID
+  includeDiscountedProducts: Boolean = false
+  isFreeShipping: Boolean = false
+  onlyUseCustomer: Boolean
+  salesChannelIds: [String!]
+  tieredDiscount: TieredDiscountInput
+  title: String!
+  translations: [CampaignTranslationInput!]
+  type: CampaignTypeEnum!
+  updatedAt: Timestamp
+  usageLimit: Int
+  usageLimitPerCustomer: Int
+}
+
+type CampaignMinMaxRangeField {
+  max: Float
+  min: Float
+}
+
+input CampaignMinMaxRangeFieldInput {
+  max: Float
+  min: Float
+}
+
+type CampaignOffer {
+  availableSalesChannelIds: [String!]!
+  createdAt: Timestamp
+  currencyCodes: [String!]
+  deleted: Boolean!
+  endDate: Timestamp
+  followUpActionType: CampaignOfferFollowUpActionTypeEnum!
+  id: ID!
+  maxCount: Float
+  maximumRequiredCartAmount: Float
+  minimumRequiredCartAmount: Float
+  name: String!
+  offers: [CampaignOfferProduct!]!
+  startDate: Timestamp
+  targetPageTypes: [CampaignOfferTargetPageTypeEnum!]!
+  triggerSettings: CampaignOfferTriggerFilter
+  triggers: CampaignOfferTriggers!
+  type: CampaignOfferTypeEnum!
+  updatedAt: Timestamp
+}
+
+enum CampaignOfferFollowUpActionTypeEnum {
+  DO_NOTHING
+  OPEN_CART
+  OPEN_CHECKOUT
+}
+
+type CampaignOfferProduct {
+  applicablePrice: CampaignOfferProductApplicablePriceEnum
+  countdownMinutes: Float
+  description: String
+  discountAmount: Float
+  discountType: OrderAmountTypeEnum
+  excludedVariantIdList: [String!]
+  id: String!
+  order: Float!
+  productId: String!
+  showCriteria: CampaignOfferProductShowCriteriaEnum
+  skipOfferIfProductExistsInCart: Boolean
+  title: String!
+  translations: [CampaignOfferProductTranslation!]
+}
+
+enum CampaignOfferProductApplicablePriceEnum {
+  DISCOUNT_PRICE
+  SELL_PRICE
+}
+
+enum CampaignOfferProductShowCriteriaEnum {
+  PREVIOUS_ACCEPTED
+  PREVIOUS_REJECTED
+}
+
+type CampaignOfferProductTranslation {
+  description: String
+  locale: String!
+  title: String!
+}
+
+enum CampaignOfferTargetPageTypeEnum {
+  CHECKOUT
+  POST_CHECKOUT
+  PRODUCT
+}
+
+type CampaignOfferTriggerFilter {
+  filterType: CampaignOfferTriggerFilterTypeEnum!
+  valueList: [String!]!
+}
+
+enum CampaignOfferTriggerFilterTypeEnum {
+  ALL_PRODUCTS
+  CATEGORY
+  MIN_CART_AMOUNT
+  PRODUCT
+  PRODUCT_AND_VARIANT
+  PRODUCT_BRAND
+  PRODUCT_TAG
+  VARIANT
+}
+
+type CampaignOfferTriggers {
+  filters: [CampaignOfferTriggerFilter!]!
+  shouldMatchAllConditions: Boolean
+}
+
+enum CampaignOfferTypeEnum {
+  CROSS_SELL
+  UPSELL
+}
+
+type CampaignPaginationResponse {
+  """
+  Returns the first three records of each page in the records returned as a response.
+  For example, **let's say page = 3, limit = 30, count = 3.**
+  The records that will return as a response are the records **between 60-62.**
+  """
+  count: Int!
+  data: [Campaign!]!
+  """
+  In the records returned as Response, it shows whether there are any more records or not. For example, let's say our page field is three and our limit field is thirty. Records between 60 and 90 will be returned. If hasNext is `true` despite these records, **it means there are more records.** If hasNext is `false`, it means there are a total of **90 records.**
+  """
+  hasNext: Boolean!
+  """
+  The maximum number of data you want to see on a page in the records returned as a response.
+  For example, if the limit is **20**, the data will be displayed ** as 20 each. **
+  :::note
+  min 1, max 200 values can be given. If no value is entered, default 50 is accepted.
+  :::
+  """
+  limit: Int!
+  """
+  The number of the page you want to see in the records that return as response.
+  For example: We entered the page field as **3**.And let our limit field be **30**.
+  The records that will return as a response are the records **between 60-90.**
+  :::note
+  If no value is entered, default 1 is accepted.
+  :::
+  """
+  page: Int!
+}
+
+type CampaignTieredDiscount {
+  filters: [CampaignFilter!]
+  isApplyByCartAmount: Boolean
+  rules: [CampaignTieredDiscountRule!]!
+  shouldMatchAllConditions: Boolean
+}
+
+type CampaignTieredDiscountRule {
+  amount: Float!
+  lineItemQuantityRange: CampaignMinMaxRangeField
+  priceRange: CampaignMinMaxRangeField
+}
+
+type CampaignTranslation {
+  """It is the name information of the translation."""
+  locale: String!
+  """It is the title information of the translation."""
+  title: String
+}
+
+input CampaignTranslationInput {
+  locale: String!
+  title: String
+}
+
+enum CampaignTypeEnum {
+  BUY_X_THEN_GET_Y
+  FIXED_AMOUNT
+  FREE_SHIPPING
+  RATIO
+}
+
+input CampaignTypeEnumFilterInput {
+  """`equal`. The filter used for equality."""
+  eq: CampaignTypeEnum
+  """Returns a boolean indicating whether a specified value is in an array."""
+  in: [CampaignTypeEnum]
+  """`not equal`. The filter used for not equality."""
+  ne: CampaignTypeEnum
+  """
+  Returns a boolean indicating whether a specified value is not in an array.
+  """
+  nin: [CampaignTypeEnum]
+}
+
+input CancelFulfillmentInput {
+  lines: [CancelFulfillmentOrderLineInput!]
+  orderId: String!
+  orderPackageId: String!
+}
+
+input CancelFulfillmentOrderLineInput {
+  orderLineItemId: String!
+  quantity: Float!
+}
+
+input CancelOrderLineInput {
+  orderId: String!
+  orderLineItems: [CancelOrderLineItemInput!]!
+}
+
+input CancelOrderLineItemInput {
+  orderLineItemId: String!
+  price: Float!
+  quantity: Float!
+  restockItems: Boolean! = true
+}
+
+type CargoCompany {
+  id: String!
+  name: String!
+}
+
+type Cart {
+  campaignOffers: [CartCampaignOffer!]
+  createdAt: Timestamp
+  createdBy: CartCreatedByEnum
+  currencyCode: String
+  currencySymbol: String
+  customerId: String
+  deleted: Boolean!
+  dueDate: Timestamp!
+  id: ID!
+  itemCount: Float!
+  items: [OrderLineItem!]!
+  lastActivityDate: Timestamp!
+  merchantId: String!
+  priceListId: String
+  salesChannelId: String!
+  status: CartStatusEnum!
+  storefrontId: String
+  storefrontRouting: CartStorefrontRouting
+  storefrontRoutingId: String
+  storefrontThemeId: String
+  taxLines: [OrderTaxLine!]
+  totalPrice: Float!
+  updatedAt: Timestamp
+}
+
+type CartCampaignOffer {
+  appliedOrderLineId: String
+  campaignOfferId: String!
+  campaignOfferProductId: String
+  offerEndDate: Timestamp
+  offerStartDate: Timestamp!
+  status: CartCampaignOfferStatus!
+  targetPageTypes: [CampaignOfferTargetPageTypeEnum!]!
+  triggerSourceOrderLineId: String!
+}
+
+enum CartCampaignOfferStatus {
+  ACCEPTED
+  REJECTED
+  REMOVED
+  WAITING_FOR_ACTION
+}
+
+enum CartCreatedByEnum {
+  ADMIN
+  CUSTOMER
+  UPSELL
+}
+
+type CartPaginationResponse {
+  """
+  Returns the first three records of each page in the records returned as a response.
+  For example, **let's say page = 3, limit = 30, count = 3.**
+  The records that will return as a response are the records **between 60-62.**
+  """
+  count: Int!
+  data: [Checkout!]!
+  """
+  In the records returned as Response, it shows whether there are any more records or not. For example, let's say our page field is three and our limit field is thirty. Records between 60 and 90 will be returned. If hasNext is `true` despite these records, **it means there are more records.** If hasNext is `false`, it means there are a total of **90 records.**
+  """
+  hasNext: Boolean!
+  """
+  The maximum number of data you want to see on a page in the records returned as a response.
+  For example, if the limit is **20**, the data will be displayed ** as 20 each. **
+  :::note
+  min 1, max 200 values can be given. If no value is entered, default 50 is accepted.
+  :::
+  """
+  limit: Int!
+  """
+  The number of the page you want to see in the records that return as response.
+  For example: We entered the page field as **3**.And let our limit field be **30**.
+  The records that will return as a response are the records **between 60-90.**
+  :::note
+  If no value is entered, default 1 is accepted.
+  :::
+  """
+  page: Int!
+}
+
+enum CartStatusEnum {
+  ACTIVE
+  FREEZE
+  PASSIVE
+}
+
+type CartStorefrontRouting {
+  domain: String
+  dynamicCurrencySettings: CartStorefrontRoutingDynamicCurrencySettings
+  id: String!
+  locale: String
+  path: String
+  priceListId: String
+}
+
+type CartStorefrontRoutingDynamicCurrencySettings {
+  """One of '.x0' | '.x9' | '.00' | '.90' | '.99' | '0.00' | '9.90'"""
+  roundingFormat: String
+  targetCurrencyCode: String!
+  targetCurrencySymbol: String
+}
+
+type CartV2CampaignOffer {
+  appliedOrderLineId: String
+  campaignOffer: CampaignOffer
+  campaignOfferId: String!
+  campaignOfferProductId: String
+  offerEndDate: Timestamp
+  offerStartDate: Timestamp!
+  status: CartCampaignOfferStatus!
+  targetPageTypes: [CampaignOfferTargetPageTypeEnum!]!
+  triggerSourceOrderLineId: String!
+}
+
+enum CartV2StatusEnum {
+  COMPLETED
+  FREEZE
+  KILLED
+  OPEN
+}
+
+type Category {
+  """
+  It is the id list information where the ids of all the superclasses of the category are found.
+  """
+  categoryPath: [String!]
+  """
+  It is the id list information where the ids of all the superclasses of the category are found.
+  """
+  categoryPathItems: [CategoryPathItem!]
+  conditions: [CategoryCondition!]
+  createdAt: Timestamp
+  deleted: Boolean!
+  """It is the description of the category of the product."""
+  description: String
+  id: ID!
+  """It is the id where the picture of the category is kept in the system."""
+  imageId: String
+  isAutomated: Boolean
+  """It is the metadata information of the product category."""
+  metaData: HTMLMetaData
+  """It is the name of the category in which the product is located."""
+  name: String!
+  orderType: CategoryProductsOrderTypeEnum
+  """It is the id of the superclass category of the category."""
+  parentId: String
+  """
+  It is the information of which sales channel the product category is in.
+  """
+  salesChannelIds: [String!]
+  """List of hidden sales channels of the category."""
+  salesChannels: [CategorySalesChannel!]
+  shouldMatchAllConditions: Boolean
+  """It is the translation information of the product category."""
+  translations: [CategoryTranslation!]
+  updatedAt: Timestamp
+}
+
+type CategoryCondition {
+  conditionType: CategoryConditionTypeEnum!
+  method: CategoryConditionMethodEnum
+  valueList: [String!]!
+}
+
+input CategoryConditionInput {
+  conditionType: CategoryConditionTypeEnum!
+  method: CategoryConditionMethodEnum
+  valueList: [String!]!
+}
+
+enum CategoryConditionMethodEnum {
+  IN
+  NOT_IN
+}
+
+"""CategoryCondition Types"""
+enum CategoryConditionTypeEnum {
+  CAMPAIGN
+  CATEGORY
+  CREATED_AT
+  DISCOUNTED_PRODUCTS
+  PRICE_RANGE
+  PRODUCT_ATTRIBUTE
+  PRODUCT_BRAND
+  PRODUCT_TAG
+  VARIANT_VALUE
+}
+
+input CategoryFilterInput {
+  eq: String
+  in: [String!]
+  nin: [String!]
+}
+
+input CategoryInput {
+  conditions: [CategoryConditionInput!]
+  createdAt: Timestamp
+  deleted: Boolean = false
+  """It is the description of the category of the product."""
+  description: String
+  id: ID
+  """It is the id where the picture of the category is kept in the system."""
+  imageId: String
+  isAutomated: Boolean
+  """It is the metadata information of the product category."""
+  metaData: HTMLMetaDataInput
+  """It is the name of the category in which the product is located."""
+  name: String!
+  orderType: CategoryProductsOrderTypeEnum
+  """It is the id of the superclass category of the category."""
+  parentId: String
+  """List of hidden sales channels of the category."""
+  salesChannels: [CategorySalesChannelInput!]
+  shouldMatchAllConditions: Boolean
+  """It is the translation information of the product category."""
+  translations: [CategoryTranslationInput!]
+  updatedAt: Timestamp
+}
+
+input CategoryPathFilterInput {
+  in: [String!]
+}
+
+type CategoryPathItem {
+  createdAt: Timestamp
+  deleted: Boolean!
+  """It is the description of the category of the product."""
+  description: String
+  id: ID!
+  """It is the id where the picture of the category is kept in the system."""
+  imageId: String
+  isAutomated: Boolean
+  """It is the metadata information of the product category."""
+  metaData: HTMLMetaData
+  """It is the name of the category in which the product is located."""
+  name: String!
+  """It is the translation information of the product category."""
+  translations: [CategoryTranslation!]
+  updatedAt: Timestamp
+}
+
+"""CategoryProductsOrder Types"""
+enum CategoryProductsOrderTypeEnum {
+  BEST_SELLER
+  HIGHEST_DISCOUNT_RATIO
+  HIGHEST_PRICE
+  LOWEST_DISCOUNT_RATIO
+  LOWEST_PRICE
+  MANUALLY
+  NAME_ASC
+  NAME_DESC
+  NEWEST
+  OLDEST
+}
+
+type CategorySalesChannel {
+  id: String!
+  status: SalesChannelStatusEnum!
+}
+
+input CategorySalesChannelInput {
+  id: String!
+  status: SalesChannelStatusEnum!
+}
+
+type CategoryTranslation {
+  """It is the description information of the translation."""
+  description: String
+  """It is the name information of the translation."""
+  locale: String!
+  """It is the information in which language the translation is saved."""
+  name: String
+}
+
+input CategoryTranslationInput {
+  """It is the description information of the translation."""
+  description: String
+  """It is the name information of the translation."""
+  locale: String!
+  """It is the information in which language the translation is saved."""
+  name: String
+}
+
+type Checkout {
+  abandonedCheckoutFlows: [AbandonedCartFlow!]
+  adjustments: [OrderAdjustment!]
+  availableShippingMethods: [AvailableShippingMethod!]
+  billingAddress: OrderAddress
+  cart: Cart
+  cartId: String!
+  couponCode: String
+  createdAt: Timestamp
+  customer: CheckoutCustomer
+  deleted: Boolean!
+  giftPackageLines: [OrderGiftPackageLine!]
+  giftPackageNote: String
+  id: ID!
+  isGiftPackage: Boolean
+  merchantId: String!
+  note: String
+  orderId: String
+  orderNumber: String
+  orderedAt: Timestamp
+  recoverEmailStatus: CheckoutRecoveryEmailStatusEnum
+  recoveryStatus: CheckoutRecoveryStatusEnum
+  shippingAddress: OrderAddress
+  shippingLines: [OrderShippingLine!]
+  shippingMethod: OrderShippingMethodEnum!
+  shippingSettingsId: String
+  shippingZoneRateId: String
+  status: CheckoutStatusEnum!
+  stockLocationId: String
+  totalFinalPrice: Float!
+  updatedAt: Timestamp
+}
+
+type CheckoutCustomer {
+  accountStatus: CustomerAccountStatusEnum
+  customerGroupIds: [String!]
+  email: String
+  firstName: String
+  id: String
+  identityNumber: String
+  lastName: String
+  notificationsAccepted: Boolean
+  phone: String
+  subscriptionStatus: CustomerEmailSubscriptionStatusesEnum
+}
+
+enum CheckoutRecoveryEmailStatusEnum {
+  NOT_SENT
+  SENT
+}
+
+enum CheckoutRecoveryStatusEnum {
+  NOT_RECOVERED
+  RECOVERED
+}
+
+enum CheckoutStatusEnum {
+  COMPLETED
+  FREEZE
+  KILLED
+  OPEN
+}
+
+type City {
+  """The two-letter city code corresponding to the city."""
+  cityCode: String
+  """ID indicating which country the city belongs to."""
+  countryId: String!
+  createdAt: Timestamp
+  deleted: Boolean!
+  id: ID!
+  """Indicates the latitude of the city."""
+  latitude: String
+  """Indicates the longitude of the city."""
+  longitude: String
+  """City's name."""
+  name: String!
+  """Specifies the order of cities."""
+  order: Float
+  """ID indicating which state the city belongs to."""
+  stateId: String!
+  updatedAt: Timestamp
+}
+
+type Country {
+  """Indicates the capital of the county."""
+  capital: String
+  createdAt: Timestamp
+  """Indicates the currency of the county."""
+  currency: String
+  currencyCode: String
+  currencySymbol: String
+  deleted: Boolean!
+  """Indicates the flag emoji of the county."""
+  emoji: String
+  """Indicates the flag emoji code of the county."""
+  emojiString: String
+  id: ID!
+  """The two-letter country code corresponding to the country."""
+  iso2: String
+  """The three-letter country code corresponding to the country."""
+  iso3: String
+  """Shows spellings of country name in different languages."""
+  locationTranslations: LocationTranslations!
+  """Country's name."""
+  name: String!
+  """Indicates the name of the country in the local language."""
+  native: String
+  """The phone code corresponding to the country."""
+  phoneCode: String
+  """Indicates the region of the county."""
+  region: String
+  """Indicates the subregion of the county."""
+  subregion: String
+  updatedAt: Timestamp
+}
+
+type Coupon {
+  applicableCustomerId: String
+  campaignId: String!
+  canCombineWithOtherCampaigns: Boolean!
+  code: String!
+  createdAt: Timestamp
+  dateRange: CouponDateRangeField
+  deleted: Boolean!
+  id: ID!
+  updatedAt: Timestamp
+  usageCount: Int!
+  usageLimit: Int
+  usageLimitPerCustomer: Int
+}
+
+type CouponDateRangeField {
+  end: Timestamp
+  start: Timestamp
+}
+
+type CouponPaginationResponse {
+  """
+  Returns the first three records of each page in the records returned as a response.
+  For example, **let's say page = 3, limit = 30, count = 3.**
+  The records that will return as a response are the records **between 60-62.**
+  """
+  count: Int!
+  data: [Coupon!]!
+  """
+  In the records returned as Response, it shows whether there are any more records or not. For example, let's say our page field is three and our limit field is thirty. Records between 60 and 90 will be returned. If hasNext is `true` despite these records, **it means there are more records.** If hasNext is `false`, it means there are a total of **90 records.**
+  """
+  hasNext: Boolean!
+  """
+  The maximum number of data you want to see on a page in the records returned as a response.
+  For example, if the limit is **20**, the data will be displayed ** as 20 each. **
+  :::note
+  min 1, max 200 values can be given. If no value is entered, default 50 is accepted.
+  :::
+  """
+  limit: Int!
+  """
+  The number of the page you want to see in the records that return as response.
+  For example: We entered the page field as **3**.And let our limit field be **30**.
+  The records that will return as a response are the records **between 60-90.**
+  :::note
+  If no value is entered, default 1 is accepted.
+  :::
+  """
+  page: Int!
+}
+
+input CreateMerchantAppPaymentWithSubscriptionInput {
+  """
+  It keeps the information of which type of license is obtained. For example: trendyol-app-licence, foriba-app-licence etc.
+  """
+  storeAppListingSubscriptionKey: String!
+}
+
+input CreateOrderInput {
+  """It is the address to which the order will be billing."""
+  billingAddress: OrderAddressInput
+  """
+  It is the branch session id of the order. If the order is placed via ikasPos, this field can be sent as filled.
+  """
+  branchSessionId: String
+  createdAt: Timestamp
+  """It is the currency code of the order."""
+  currencyCode: String
+  """It is the customer information in the order."""
+  customer: OrderCustomerInput
+  deleted: Boolean = false
+  """Host name of order source."""
+  host: String
+  id: ID
+  """It is an order note."""
+  note: String
+  """
+  A list of adjustment objects, each containing information about a adjustment in the order.
+  """
+  orderAdjustments: [OrderAdjustmentInput!]
+  """
+  A list of line item objects, each containing information about an item in the order.
+  """
+  orderLineItems: [OrderLineItemInput!]!
+  """
+  It is the id list of the tags in the order.
+  * Is the entered tag id list must be exist in ikas.
+  """
+  orderTagIds: [String!]
+  """The date the order was ordered."""
+  orderedAt: Timestamp
+  """
+  It is the id of the price list that includes the prices of the products in the order.
+  * Is the entered id must be exist in ikas.
+  """
+  priceListId: String
+  """
+  It is the sales channel id where the order was created.
+  * Is the entered id must be exist in ikas.
+  """
+  salesChannelId: String
+  """It is the address to which the order will be shipping."""
+  shippingAddress: OrderAddressInput
+  """
+  A list of shipping line objects, each containing information about a shipping in the order.
+  """
+  shippingLines: [OrderShippingLineInput!]
+  """It is the shipping method enum of the order"""
+  shippingMethod: OrderShippingMethodEnum
+  """
+  It is the source id of the order. If the order came from the marketplace, it shows the order number in the marketplace.
+  """
+  sourceId: String
+  """It is the staff information of the order."""
+  staff: OrderStaffInput
+  """
+  It is the terminal session id of the order. If the order is placed via ikasPos, this field can be sent as filled.
+  """
+  terminalId: String
+  updatedAt: Timestamp
+}
+
+input CreateOrderWithTransactionsInput {
+  """
+  If there is no customer connected to the e-mail in the order and it is not desired to create a new customer with this e-mail, it can be sent as `true`.
+  """
+  disableAutoCreateCustomer: Boolean
+  """If this value is sent as 'true,' your order lines will not be taxed."""
+  isTaxFreeOrder: Boolean
+  """Contains the order information to be created."""
+  order: CreateOrderInput!
+  """
+  A list of transaction objects.
+  * The list must contain at least one transaction.
+  """
+  transactions: [OrderTransactionInput!]!
+}
+
+enum CurrencyFormatSymbolPosition {
+  LEFT
+  RIGHT
+}
+
+type Customer {
+  """CustomerAccountStatusEnum"""
+  accountStatus: CustomerAccountStatusEnum
+  accountStatusUpdatedAt: Timestamp
+  """A list of the ten most recently updated addresses for the customer."""
+  addresses: [CustomerAddress!]
+  attributes: [CustomerAttributeValue!]
+  birthDate: Timestamp
+  createdAt: Timestamp
+  """Groups that the store owner attaches to the customer."""
+  customerGroupIds: [String!]
+  """Segments that the customers are belong to."""
+  customerSegmentIds: [String!]
+  """
+  It is the sequence value of the customer. The sequence value starts from 1.
+  """
+  customerSequence: Float
+  deleted: Boolean!
+  """
+  The unique email address of the customer. Attempting to assign the same email address to multiple customers returns an error.
+  """
+  email: String
+  """The date the **email** was verified."""
+  emailVerifiedDate: Timestamp
+  """The customer's first name."""
+  firstName: String!
+  """Date of first order by the customer"""
+  firstOrderDate: Timestamp
+  """
+  Customer's full name. Firstname plus lastname if firstname and lastname exist. Otherwise, it is saved as firstname only.
+  """
+  fullName: String
+  gender: CustomerGenderTypeEnum
+  id: ID!
+  ip: String
+  """
+  Email verification status. **isEmailVerified** returns `true` if the email is verified.
+  """
+  isEmailVerified: Boolean
+  """
+  Phone verification status. **isPhoneVerified** returns `true` if the email is verified.
+  """
+  isPhoneVerified: Boolean
+  """The customer's last name."""
+  lastName: String
+  """Date of last order by the customer"""
+  lastOrderDate: Timestamp
+  """Last used price list id by the customer"""
+  lastPriceListId: String
+  """Last used storefront routing id by the customer"""
+  lastStorefrontRoutingId: String
+  """A note about the customer."""
+  note: String
+  """Number of orders placed by the customer."""
+  orderCount: Float
+  """Date the customer last changed their password."""
+  passwordUpdateDate: Timestamp
+  """The customer's phone number"""
+  phone: String
+  """CustomerEmailSubscriptionStatusesEnum"""
+  phoneSubscriptionStatus: CustomerEmailSubscriptionStatusesEnum
+  phoneSubscriptionStatusUpdatedAt: Timestamp
+  """The date the **email** was verified."""
+  phoneVerifiedDate: Timestamp
+  preferredLanguage: String
+  priceListId: String
+  priceListRules: [CustomerPriceListRule!]
+  """Registration source of customer."""
+  registrationSource: CustomerRegistrationSourceEnum
+  """CustomerEmailSubscriptionStatusesEnum"""
+  smsSubscriptionStatus: CustomerEmailSubscriptionStatusesEnum
+  smsSubscriptionStatusUpdatedAt: Timestamp
+  """CustomerEmailSubscriptionStatusesEnum"""
+  subscriptionStatus: CustomerEmailSubscriptionStatusesEnum
+  subscriptionStatusUpdatedAt: Timestamp
+  """Tags that the store owner attaches to the customer."""
+  tagIds: [String!]
+  """Amount of orders by the customer"""
+  totalOrderPrice: Float
+  updatedAt: Timestamp
+  userAgent: String
+}
+
+"""Customer Account Statuses"""
+enum CustomerAccountStatusEnum {
+  ACTIVE_ACCOUNT
+  DEACTIVATED_ACCOUNT
+  DECLINED_ACCOUNT_INVITATION
+  DISABLED_ACCOUNT
+  INVITED_TO_CREATE_ACCOUNT
+}
+
+type CustomerAddress {
+  """The customer's mailing address."""
+  addressLine1: String!
+  """An additional field for the customer's mailing address."""
+  addressLine2: String
+  attributes: [CustomerAttributeValue!]
+  """The customer's city."""
+  city: CustomerAddressCity!
+  """The customer's company."""
+  company: String
+  """The customer's country."""
+  country: CustomerAddressCountry!
+  createdAt: Timestamp
+  deleted: Boolean!
+  """The customer's district in city."""
+  district: CustomerAddressDistrict
+  """The customer's first name."""
+  firstName: String!
+  id: ID!
+  """The customer's identity numbers."""
+  identityNumber: String
+  """
+  Whether this address is the default address for the customer. Returns `true` for each default address.
+  """
+  isDefault: Boolean
+  """The customer's last name."""
+  lastName: String!
+  """The customer's phone number at this address"""
+  phone: String
+  """The customer's postal code, also known as zip, postcode, etc."""
+  postalCode: String
+  region: CustomerAddressRegion
+  state: CustomerAddressState
+  """Tax number that the customer will use for orders"""
+  taxNumber: String
+  """
+  If customer is corporate, customer can use that field to fill their Tax Office name.
+  """
+  taxOffice: String
+  title: String!
+  updatedAt: Timestamp
+}
+
+type CustomerAddressCity {
+  """The two-letter country code corresponding to the customer's country."""
+  code: String
+  id: String
+  """The customer's normalized city name."""
+  name: String!
+}
+
+type CustomerAddressCountry {
+  """The two-letter country code corresponding to the customer's country."""
+  code: String
+  id: String
+  """The two-letter country code corresponding to the customer's country."""
+  iso2: String
+  """The two-letter country code corresponding to the customer's country."""
+  iso3: String
+  """The customer's normalized country name."""
+  name: String!
+}
+
+type CustomerAddressDistrict {
+  """The two-letter district code corresponding to the customer's district."""
+  code: String
+  id: String
+  """The customer's normalized district name."""
+  name: String
+}
+
+type CustomerAddressRegion {
+  createdAt: Timestamp
+  deleted: Boolean
+  id: String!
+  name: String!
+  updatedAt: Timestamp
+}
+
+type CustomerAddressState {
+  code: String
+  id: String
+  name: String
+}
+
+type CustomerAttribute {
+  createdAt: Timestamp
+  deleted: Boolean!
+  description: String
+  id: ID!
+  name: String!
+  options: [CustomerAttributeOption!]
+  order: Float
+  routings: [CustomerAttributeRouting!]
+  salesChannels: [CustomerAttributeSalesChannel!]
+  translations: [CustomerAttributeTranslation!]
+  type: CustomerAttributeTypeEnum!
+  updatedAt: Timestamp
+}
+
+type CustomerAttributeOption {
+  createdAt: Timestamp
+  deleted: Boolean!
+  id: ID!
+  name: String!
+  order: Float
+  updatedAt: Timestamp
+}
+
+type CustomerAttributeOptionTranslation {
+  id: String!
+  name: String
+}
+
+"""Customer Attribute Permission Types"""
+enum CustomerAttributePermissionEnum {
+  INVISIBLE
+  READ
+  WRITE
+}
+
+"""Customer Attribute Register Page Requirement Types"""
+enum CustomerAttributeRegisterPageRequirementEnum {
+  INVISIBLE
+  MANDATORY
+  OPTIONAL
+}
+
+type CustomerAttributeRouting {
+  storefrontRoutingId: String!
+}
+
+type CustomerAttributeSalesChannel {
+  permission: CustomerAttributePermissionEnum!
+  registerPageRequirement: CustomerAttributeRegisterPageRequirementEnum!
+  salesChannelId: String!
+  storefrontId: String!
+}
+
+type CustomerAttributeTranslation {
+  description: String
+  locale: String!
+  name: String
+  options: [CustomerAttributeOptionTranslation!]
+}
+
+"""CustomerAttribute Types"""
+enum CustomerAttributeTypeEnum {
+  BOOLEAN
+  CHOICE
+  DATE
+  DATETIME
+  MULTIPLE_CHOICE
+  NUMERIC
+  TEXT
+}
+
+type CustomerAttributeValue {
+  customerAttributeId: String
+  customerAttributeOptionId: String
+  value: String
+}
+
+enum CustomerB2BStatusEnum {
+  ACTIVE_ACCOUNT
+  DISABLED_ACCOUNT
+  WAITING_FOR_APPROVAL
+}
+
+"""Customer Email Subscription Statuses"""
+enum CustomerEmailSubscriptionStatusesEnum {
+  NOT_SUBSCRIBED
+  PENDING_CONFIRMATION
+  SUBSCRIBED
+}
+
+enum CustomerGenderTypeEnum {
+  FEMALE
+  MALE
+  OTHER
+}
+
+type CustomerPaginationResponse {
+  """
+  Returns the first three records of each page in the records returned as a response.
+  For example, **let's say page = 3, limit = 30, count = 3.**
+  The records that will return as a response are the records **between 60-62.**
+  """
+  count: Int!
+  data: [Customer!]!
+  """
+  In the records returned as Response, it shows whether there are any more records or not. For example, let's say our page field is three and our limit field is thirty. Records between 60 and 90 will be returned. If hasNext is `true` despite these records, **it means there are more records.** If hasNext is `false`, it means there are a total of **90 records.**
+  """
+  hasNext: Boolean!
+  """
+  The maximum number of data you want to see on a page in the records returned as a response.
+  For example, if the limit is **20**, the data will be displayed ** as 20 each. **
+  :::note
+  min 1, max 200 values can be given. If no value is entered, default 50 is accepted.
+  :::
+  """
+  limit: Int!
+  """
+  The number of the page you want to see in the records that return as response.
+  For example: We entered the page field as **3**.And let our limit field be **30**.
+  The records that will return as a response are the records **between 60-90.**
+  :::note
+  If no value is entered, default 1 is accepted.
+  :::
+  """
+  page: Int!
+}
+
+type CustomerPriceListRule {
+  discountRate: Float
+  filters: [CustomerPriceListRuleFilter!]
+  priceListId: String
+  shouldMatchAllFilters: Boolean
+  value: Float!
+  valueType: CustomerPriceListRuleValueTypeEnum!
+}
+
+type CustomerPriceListRuleFilter {
+  type: CustomerPriceListRuleFilterTypeEnum!
+  valueList: [String!]!
+}
+
+enum CustomerPriceListRuleFilterTypeEnum {
+  CATEGORY
+  PRODUCT
+  PRODUCT_BRAND
+  PRODUCT_TAG
+}
+
+enum CustomerPriceListRuleValueTypeEnum {
+  DISCOUNT_AMOUNT
+  DISCOUNT_RATE
+  FIXED_PRICE
+}
+
+"""Customer Registration Source Enum"""
+enum CustomerRegistrationSourceEnum {
+  apple
+  credentials
+  facebook
+  google
+  twitch
+}
+
+input DateFilterInput {
+  """`equal`. The filter used for equality."""
+  eq: Timestamp
+  """
+  `greater than` selects the documents where the value of the `input` is greater than to (** i.e. > **) a specified value (e.g. value.)
+  """
+  gt: Timestamp
+  """
+  `greater than or equals` selects the documents where the value of the `input` is greater than or equal to (** i.e. >= **) a specified value (e.g. value.)
+  """
+  gte: Timestamp
+  """Returns a boolean indicating whether a specified value is in an array."""
+  in: [Timestamp!]
+  """
+  `less than` selects the documents where the value of the `input` is less than or equal to (** i.e. < **) a specified value (e.g. value.)
+  """
+  lt: Timestamp
+  """
+  `less than or equals` selects the documents where the value of the `input` is less than or equal to (** i.e. <= **) a specified value (e.g. value.)
+  """
+  lte: Timestamp
+  """`not equal`. The filter used for not equality."""
+  ne: Timestamp
+  """
+  Returns a boolean indicating whether a specified value is not in an array.
+  """
+  nin: [Timestamp!]
+}
+
+type District {
+  """ID indicating which city the district belongs to."""
+  cityId: String!
+  """ID indicating which country the district belongs to."""
+  countryId: String!
+  createdAt: Timestamp
+  deleted: Boolean!
+  id: ID!
+  """Indicates the latitude of the city."""
+  latitude: String
+  """Indicates the longitude of the city."""
+  longitude: String
+  """District's name."""
+  name: String!
+  """Specifies the order of districts."""
+  order: Float
+  """ID indicating which state the district belongs to."""
+  stateId: String!
+  updatedAt: Timestamp
+}
+
+type FixedDiscount {
+  amount: Float
+  filters: [CampaignFilter!]
+  isApplyByCartAmount: Boolean
+  lineItemQuantityRange: CampaignMinMaxRangeField
+  priceRange: CampaignMinMaxRangeField
+  shouldMatchAllConditions: Boolean
+}
+
+input FixedDiscountInput {
+  amount: Float
+  filters: [CampaignFilterInput!]
+  isApplyByCartAmount: Boolean
+  lineItemQuantityRange: CampaignMinMaxRangeFieldInput
+  priceRange: CampaignMinMaxRangeFieldInput
+  shouldMatchAllConditions: Boolean
+}
+
+input FulFillOrderInput {
+  lines: [FulfillOrderLineInput!]!
+  markAsReadyForShipment: Boolean
+  orderId: String!
+  sendNotificationToCustomer: Boolean
+  sourcePackageId: String
+  trackingInfoDetail: TrackingInfoDetailInput
+}
+
+input FulfillOrderLineInput {
+  orderLineItemId: String!
+  quantity: Float!
+}
+
+input GenerateCouponInput {
+  applicableCustomerId: String
+  canCombineWithOtherCampaigns: Boolean!
+  prefix: String!
+  quantity: Int!
+  usageLimit: Int
+  usageLimitPerCustomer: Int
+}
+
+type GetImportJobDataResponse {
+  data: String
+  errorMessage: String
+  importJobId: String
+  status: ImportStatusEnum
+}
+
+type GetLastImportJobDataResponse {
+  fileURL: String
+  importJobId: String
+}
+
+type GetLastImportJobDataResponseData {
+  data: [GetLastImportJobDataResponse!]
+}
+
+input GetOrderInvoicePdfUrlInput {
+  invoiceId: String!
+  orderId: String!
+}
+
+type GetVideoUploadURLResponse {
+  """
+  Fields object that should be sent with the video file as multipart form-data.
+  """
+  fields: JSON!
+  """Upload url for the specified video."""
+  url: String!
+}
+
+type GetY {
+  amount: Float!
+  automaticallyAddItemToCart: Boolean
+  discountRatio: Float!
+  discountType: CampaignGetYDiscountTypeEnum
+  filter: CampaignFilter!
+}
+
+input GetYInput {
+  amount: Float!
+  automaticallyAddItemToCart: Boolean
+  discountRatio: Float!
+  discountType: CampaignGetYDiscountTypeEnum
+  filter: CampaignFilterInput!
+}
+
+type GlobalTaxSettings {
+  createdAt: Timestamp
+  deleted: Boolean!
+  id: ID!
+  isTaxExcludedOnPrices: Boolean!
+  isTaxExcludedOnShippingPrices: Boolean!
+  storefrontId: String
+  updatedAt: Timestamp
+}
+
+input GlobalTaxSettingsInput {
+  createdAt: Timestamp
+  deleted: Boolean = false
+  id: ID
+  isTaxExcludedOnPrices: Boolean! = false
+  isTaxExcludedOnShippingPrices: Boolean! = false
+  storefrontId: String
+  updatedAt: Timestamp
+}
+
+type HTMLMetaData {
+  """Canonical URL list of entity."""
+  canonicals: [String!]
+  createdAt: Timestamp
+  deleted: Boolean!
+  """The description of the metadata."""
+  description: String
+  """Defines if the entity is not indexable by search engines"""
+  disableIndex: Boolean
+  id: ID!
+  metadataOverrides: [HTMLMetaDataOverride!]
+  """The page title of the metadata."""
+  pageTitle: String
+  redirectTo: String
+  """The token of the metadata. It is saved as completely unique."""
+  slug: String!
+  targetId: String
+  targetType: HTMLMetaDataTargetTypeEnum
+  """The translations information of the metadata."""
+  translations: [HTMLMetaDataTranslation!]
+  updatedAt: Timestamp
+}
+
+input HTMLMetaDataInput {
+  canonicals: [String!]
+  createdAt: Timestamp
+  deleted: Boolean = false
+  description: String
+  disableIndex: Boolean
+  id: ID
+  metadataOverrides: [HTMLMetaDataOverrideInput!]
+  pageTitle: String
+  slug: String!
+  targetId: String
+  targetType: HTMLMetaDataTargetTypeEnum
+  translations: [HTMLMetaDataTranslationInput!]
+  updatedAt: Timestamp
+}
+
+type HTMLMetaDataOverride {
+  description: String!
+  language: String
+  pageTitle: String!
+  storefrontId: String
+  storefrontRegionId: String
+}
+
+input HTMLMetaDataOverrideInput {
+  description: String!
+  language: String
+  pageTitle: String!
+  storefrontId: String
+  storefrontRegionId: String
+}
+
+"""Url Slug Target Type Enum Codes"""
+enum HTMLMetaDataTargetTypeEnum {
+  BRAND
+  CATEGORY
+  PAGE
+  PRODUCT
+}
+
+type HTMLMetaDataTranslation {
+  description: String
+  locale: String!
+  pageTitle: String
+  slug: String
+}
+
+input HTMLMetaDataTranslationInput {
+  description: String
+  locale: String!
+  pageTitle: String
+  slug: String
+}
+
+"""Import Status Type"""
+enum ImportStatusEnum {
+  FAILED
+  FETCHING
+  IMPORTING
+  SUCCESS
+  WAITING
+  WAITING_FOR_IMPORT
+}
+
+"""Import Type"""
+enum ImportTypeEnum {
+  CUSTOMER
+  CUSTOMER_ATTRIBUTE
+  CUSTOMER_REVIEW
+  ORDER
+  ORDER_COUPON
+  ORDER_RAFFLE_PARTICIPANT
+  PRODUCT
+  PRODUCT_ATTRIBUTE
+  PRODUCT_BACK_IN_STOCK_REMINDER
+  PRODUCT_BRAND
+  PRODUCT_CATEGORY
+  PRODUCT_ORDER
+  PRODUCT_PRICE_LIST
+  PRODUCT_PURCHASE_ORDER
+  PRODUCT_STOCK_COUNT
+  PRODUCT_STOCK_TRANSFER
+  REPORT_PURCHASE_ORDER_BY_DATE
+  REPORT_SALES_BY_DATE
+  REPORT_SALES_BY_GROUP_FIELDS
+  STOREFRONT_REDIRECT
+  STORE_FRONT_THEME_LOCALIZATION
+  TRANSLATION
+}
+
+type Invoice {
+  """It is the id of the order invoice."""
+  appId: String!
+  """It is the id of the order invoice."""
+  appName: String!
+  """It is the id of the order invoice."""
+  createdAt: Timestamp
+  """It is indicates that the invoice has the pdf."""
+  hasPdf: Boolean
+  """It is the id of the order invoice."""
+  id: String!
+  """It is data of the invoice."""
+  invoiceData: JSON
+  """It is the id of the order invoice."""
+  invoiceNumber: String!
+  """It is the id of the order invoice."""
+  storeAppId: String!
+  """It is the type enum of the invoice."""
+  type: InvoiceTypeEnum!
+}
+
+enum InvoiceTypeEnum {
+  COMPANY
+  INDIVIDUAL
+  OTHER
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+type Language {
+  createdAt: Timestamp
+  deleted: Boolean!
+  id: ID!
+  locale: String!
+  name: String!
+  updatedAt: Timestamp
+}
+
+input ListAbandonedCartInput {
+  recoverEmailStatus: CheckoutRecoveryEmailStatusEnum
+  recoveryStatus: CheckoutRecoveryStatusEnum
+}
+
+type LocalDeliveryAvailableHoursRange {
+  endTime: String!
+  startTime: String!
+}
+
+type LocalDeliverySettings {
+  activeDays: [LocalDeliverySettingsDayType!]!
+  activeLocalDeliveryHours: LocalDeliveryAvailableHoursRange
+  timezone: String!
+}
+
+type LocalDeliverySettingsDayEstimatedDeliveryTime {
+  type: LocalDeliverySettingsDeliveryTimeType!
+  value: Float!
+}
+
+type LocalDeliverySettingsDayType {
+  activeLocalDeliveryHours: LocalDeliveryAvailableHoursRange
+  day: LocalDeliverySettingsDayTypes!
+  estimatedDeliveryTime: LocalDeliverySettingsDayEstimatedDeliveryTime
+}
+
+"""LocalDeliverySettingsDayTypes"""
+enum LocalDeliverySettingsDayTypes {
+  FRIDAY
+  MONDAY
+  SATURDAY
+  SUNDAY
+  THURSDAY
+  TUESDAY
+  WEDNESDAY
+}
+
+"""LocalDeliverySettingsDeliveryTimeType"""
+enum LocalDeliverySettingsDeliveryTimeType {
+  DAY
+  HOUR
+  MINUTE
+}
+
+type LocationTranslations {
+  de: String
+  en: String!
+  fr: String
+  tr: String!
+}
+
+type MeResponse {
+  """The date the app was added."""
+  addedDate: Timestamp
+  """The merchant staff's email address."""
+  email: String
+  id: String
+  name: String
+  partnerId: String
+  """The id of the sales channel owned by the merchant."""
+  salesChannelId: String
+  scope: String
+  """
+  It keeps the information of the operations that this application can access and perform. For more information please review [Scopes section](/docs/intro#api-scopes).
+  """
+  scopes: [AppScopeEnum!]
+  """The application's id in the store."""
+  storeAppId: String
+  """
+  It keeps the information that a merchant cn install more than one application. If `true`, merchant can add more than one application.
+  """
+  supportsMultipleInstallation: Boolean
+}
+
+type MerchantAddress {
+  """The merchant's mailing address."""
+  addressLine1: String
+  """An additional field for the merchant's mailing address."""
+  addressLine2: String
+  """The merchant's city."""
+  city: MerchantAddressCity
+  company: String
+  """The merchant's country."""
+  country: MerchantAddressCountry
+  """The merchant's district in city."""
+  district: MerchantAddressDistrict
+  """The merchant staff's first name."""
+  firstName: String
+  """The merchant's identity numbers."""
+  identityNumber: String
+  """The merchant staff's last name."""
+  lastName: String
+  """The merchant's postal code, also known as zip, postcode, etc."""
+  postalCode: String
+  state: MerchantAddressState
+  taxNumber: String
+  """
+  If merchant is corporate, merchant can use that field to fill their Tax Office name.
+  """
+  taxOffice: String
+  title: String
+  type: MerchantSettingsAddressTypeEnum
+  vkn: String
+}
+
+type MerchantAddressCity {
+  """The city code corresponding to the merchant's city."""
+  code: String
+  id: String
+  """The merchant's normalized city name."""
+  name: String
+}
+
+type MerchantAddressCountry {
+  """The ISO3 country code corresponding to the merchant's country."""
+  code: String
+  id: String
+  """Two-letter country code"""
+  iso2: String
+  """Three-letter country code"""
+  iso3: String
+  """The merchant's normalized country name."""
+  name: String
+}
+
+type MerchantAddressDistrict {
+  """The district code corresponding to the merchant's district."""
+  code: String
+  id: String
+  """The merchant's normalized district name."""
+  name: String
+}
+
+type MerchantAddressState {
+  code: String
+  id: String
+  name: String
+}
+
+type MerchantAppPayment {
+  """
+  It keeps the information of which type of license is obtained. For example: trendyol-app-licence, foriba-app-licence etc.
+  """
+  appPaymentKey: String
+  """
+  The id of the app that generated the app payment. Actually, the id of the app for which merchant app payment was created.
+  """
+  authorizedAppId: String
+  createdAt: Timestamp
+  deleted: Boolean!
+  id: ID!
+  """
+  The url where the Merchant will be redirected to the payment screen. On this page, the payment process is performed by obtaining the card information.
+  """
+  merchantPaymentUrl: String!
+  """The created merchant app keeps the name of the payment. """
+  name: String!
+  """
+  The merchant app keeps the date of completion of the payment. In other words, it keeps the information of the date the payment was received.
+  """
+  paymentDate: Timestamp
+  """Merchant app payment pricing description."""
+  prices: [MerchantAppPaymentPrice!]!
+  status: MerchantAppPaymentStatusEnum!
+  """
+  The id of the application for which payment will be created in the store
+  """
+  storeAppId: String!
+  storeAppListingSubscriptionId: String
+  storeAppListingSubscriptionKey: String
+  type: MerchantAppPaymentTypeEnum!
+  updatedAt: Timestamp
+}
+
+input MerchantAppPaymentInput {
+  """The created merchant app keeps the name of the payment."""
+  name: String!
+  """
+  The area where the price information of the product is kept. Input array can be sent a minimum of one element and a maximum of 2 elements.
+  """
+  price: Float!
+}
+
+type MerchantAppPaymentPaginationResponse {
+  """
+  Returns the first three records of each page in the records returned as a response.
+  For example, **let's say page = 3, limit = 30, count = 3.**
+  The records that will return as a response are the records **between 60-62.**
+  """
+  count: Int!
+  data: [MerchantAppPayment!]!
+  """
+  In the records returned as Response, it shows whether there are any more records or not. For example, let's say our page field is three and our limit field is thirty. Records between 60 and 90 will be returned. If hasNext is `true` despite these records, **it means there are more records.** If hasNext is `false`, it means there are a total of **90 records.**
+  """
+  hasNext: Boolean!
+  """
+  The maximum number of data you want to see on a page in the records returned as a response.
+  For example, if the limit is **20**, the data will be displayed ** as 20 each. **
+  :::note
+  min 1, max 200 values can be given. If no value is entered, default 50 is accepted.
+  :::
+  """
+  limit: Int!
+  """
+  The number of the page you want to see in the records that return as response.
+  For example: We entered the page field as **3**.And let our limit field be **30**.
+  The records that will return as a response are the records **between 60-90.**
+  :::note
+  If no value is entered, default 1 is accepted.
+  :::
+  """
+  page: Int!
+}
+
+type MerchantAppPaymentPrice {
+  period: SubscriptionPeriodEnum!
+  """
+  The area where the price information of the product is kept. Here, one-time, monthly or annual payments can be made and the information is kept in this way.
+  """
+  price: Float!
+}
+
+enum MerchantAppPaymentStatusEnum {
+  PAID
+  PAYMENT_FAILED
+  WAITING_FOR_PAYMENT
+}
+
+enum MerchantAppPaymentTypeEnum {
+  ONE_TIME
+  SUBSCRIPTION
+}
+
+type MerchantAppSubscription {
+  """The date the app licence was added."""
+  addedDate: Timestamp
+  """It is the information of which type of app license is obtained."""
+  appPaymentKey: String
+  """
+  The id of the app that generated the app payment. Actually, the id of the app for which merchant app payment was created.
+  """
+  authorizedAppId: String
+  createdAt: Timestamp
+  currency: SubscriptionPriceCurrencyEnum
+  currencyCode: String
+  currencySymbol: String
+  deleted: Boolean!
+  id: ID!
+  """
+  It is the date of receipt of the last payment for the license subscription.
+  """
+  lastPaymentDate: Timestamp
+  """
+  The discount rate on the last payment for the app license subscription.
+  """
+  lastPaymentDiscountRatio: Float
+  lastPaymentPeriod: SubscriptionPeriodEnum!
+  """
+  The payment period of the license last payment. The purpose of keeping this information is to adjust the controls according to the last month if the subscription is withdrawn from annual to monthly.
+  """
+  lastPaymentPeriodInDays: Float!
+  """It is the last payment information for the app license subscription."""
+  lastPaymentPrice: Float!
+  """
+  It is the price information including KDV, for which the last payment is made for the app license subscription.
+  """
+  lastPaymentPriceWithTax: Float!
+  merchantAppPaymentId: String
+  """The name of the created application license is the information."""
+  name: String!
+  status: MerchantSubscriptionStatusEnum!
+  """The id of the application to be licensed in the store"""
+  storeAppId: String!
+  storeAppListingSubscriptionId: String!
+  storeAppListingSubscriptionKey: String!
+  updatedAt: Timestamp
+}
+
+type MerchantLicence {
+  activeSubscriptionCode: SubscriptionCodeEnum!
+  """
+  If the license is attached to an app, its properties are kept in this domain.
+  """
+  appSubscriptions: [MerchantAppSubscription!]
+  createdAt: Timestamp
+  deleted: Boolean!
+  developmentStore: Boolean
+  """It is the information of the start date of the license."""
+  fromDate: Timestamp
+  id: ID!
+  period: SubscriptionPeriodEnum
+  region: MerchantRegionEnum!
+  """It is the information of the expiry date of the license."""
+  toDate: Timestamp
+  updatedAt: Timestamp
+}
+
+enum MerchantRegionEnum {
+  AF
+  AN
+  AS
+  EU
+  OC
+  PL
+  TR
+  US
+}
+
+type MerchantResponse {
+  """Merchant's address information."""
+  address: MerchantAddress
+  """The merchant staff's email address."""
+  email: String!
+  """The merchant's first name."""
+  firstName: String!
+  id: String!
+  """The merchant's last name."""
+  lastName: String!
+  """The merchant staff's last name."""
+  merchantName: String
+  merchantSequence: Float
+  """The merchant's phone number."""
+  phoneNumber: String
+  """The merchant's store name."""
+  storeName: String
+}
+
+type MerchantSettings {
+  accessPermission: Boolean
+  accessPermissionToDate: Timestamp
+  """Merchant's address information."""
+  address: MerchantAddress
+  billingAddress: MerchantAddress
+  createdAt: Timestamp
+  currencyCode: String
+  currencyFormats: [MerchantSettingsCurrencyFormat!]
+  currencySymbol: String
+  defaultLocale: String
+  deleted: Boolean!
+  id: ID!
+  logoId: String
+  merchantName: String!
+  phone: String
+  requireMFAForAllStaffs: Boolean
+  timezone: String
+  updatedAt: Timestamp
+}
+
+enum MerchantSettingsAddressTypeEnum {
+  CORPORATE
+  INDIVIDUAL
+}
+
+type MerchantSettingsCurrencyFormat {
+  currencyCode: String!
+  decimalSeparator: String!
+  omitZeroDecimal: Boolean!
+  symbol: String!
+  symbolPosition: CurrencyFormatSymbolPosition!
+  thousandSeparator: String!
+}
+
+enum MerchantSubscriptionStatusEnum {
+  ACTIVE
+  REMOVED
+  WILL_BE_REMOVED
+}
+
+type Mutation {
+  addCustomTimelineEntry(input: TimelineInput!): Boolean!
+  """Use this mutation to add invoice to order."""
+  addOrderInvoice(input: AddOrderInvoiceInput!): Order
+  addOrderTag(input: UpdateOrderTagInput!): Boolean!
+  approvePendingOrderTransactions(input: ApproveOrderTransactionsInput!): Boolean!
+  """Response indicating the status of operation."""
+  bulkUpdateProducts(
+    """Input for bulk update products."""
+    input: [BulkUpdateProductsInput!]!
+  ): String!
+  campaignAddCoupons(input: AddCouponsInput!): [Coupon!]!
+  """Use this mutation to cancel the already created package for an order."""
+  cancelFulfillment(input: CancelFulfillmentInput!): Order!
+  """Use this mutation to cancel given order lines."""
+  cancelOrderLine(input: CancelOrderLineInput!): Order!
+  """Using this api, you can add payment features to a merchant app."""
+  createMerchantAppPayment(input: MerchantAppPaymentInput!): MerchantAppPayment!
+  """
+  Using this api, you can add payment features to a merchant app with app subscription id.
+  """
+  createMerchantAppPaymentWithSubscription(input: CreateMerchantAppPaymentWithSubscriptionInput!): MerchantAppPayment
+  """Use this mutation if you want to create a new order with transactions."""
+  createOrderWithTransactions(input: CreateOrderWithTransactionsInput!): Order!
+  deleteCampaignList(idList: [String!]!): Boolean!
+  """Using this api, you can delete the categories of products."""
+  deleteCategoryList(idList: [String!]!): Boolean!
+  deleteCouponList(idList: [String!]!): String!
+  deleteGlobalTaxSettingsList(idList: [String!]!): Boolean!
+  deleteOrderTagList(idList: [String!]!): Boolean!
+  """Use this mutation to delete product attributes with specific ids."""
+  deleteProductAttributeList(idList: [String!]!): Boolean!
+  """Using this api, you can delete the brands of products."""
+  deleteProductBrandList(idList: [String!]!): Boolean!
+  """Use this mutation to delete products with specific product ids."""
+  deleteProductList(idList: [String!]!): Boolean!
+  deleteProductOrderList(idList: [String!]!): Boolean!
+  """Using this api, you can delete the tags of products."""
+  deleteProductTagList(idList: [String!]!): Boolean!
+  """Using this api, you can delete the units of products."""
+  deleteProductUnitList(idList: [String!]!): Boolean!
+  """Using this api, you can delete the product volume discounts"""
+  deleteProductVolumeDiscountList(idList: [String!]!): Boolean!
+  """
+  Using this api, you can delete javascript script from a the storefront.
+  """
+  deleteStorefrontJSScript(storefrontIdList: [String!]!): Boolean!
+  """Using this API, you can delete a policy from the storefront."""
+  deleteStorefrontPolicyList(idList: [String!]!): Boolean!
+  deleteTaxSettingsList(idList: [String!]!): Boolean!
+  """Using this api, you can delete the variant types of products."""
+  deleteVariantTypeList(idList: [String!]!): Boolean!
+  """Use this mutation to delete vendors with specific vendor ids."""
+  deleteVendorList(idList: [String!]!): Boolean!
+  """Use this mutation to delete webhooks by giving `scope` list."""
+  deleteWebhook(scopes: [String!]!): Boolean!
+  """Use this mutation to fulfill order line items."""
+  fulfillOrder(input: FulFillOrderInput!): Order!
+  """Using this api, you can collect demo day."""
+  getAppDemoDay(input: CreateMerchantAppPaymentWithSubscriptionInput!): Float
+  getOrderInvoicePdfUrl(input: GetOrderInvoicePdfUrlInput!): String
+  """Use this mutation to refund given order lines."""
+  refundOrderLine(input: OrderRefundInput!): Order!
+  removeOrderTag(input: UpdateOrderTagInput!): Boolean!
+  saveCampaign(input: CampaignInput!): Campaign!
+  """Using this api, you can update the categories of products."""
+  saveCategory(input: CategoryInput!): Category!
+  saveGlobalTaxSettings(input: GlobalTaxSettingsInput!): GlobalTaxSettings!
+  saveOrderTag(input: OrderTagInput!): OrderTag!
+  """
+  Use this mutation to create or update a product with provided input values.
+  """
+  saveProduct(input: ProductInput!): Product!
+  """
+  Use this mutation to create or update product attributes with provided input values.
+  """
+  saveProductAttribute(input: ProductAttributeInput!): ProductAttribute!
+  """Using this api, you can update the brands of products."""
+  saveProductBrand(input: ProductBrandInput!): ProductBrand!
+  saveProductOrder(input: ProductOrderInput!): ProductOrder!
+  """Use this mutation to define new stock or update stocks by location."""
+  saveProductStockLocations(input: SaveStockLocationsInput!): Boolean!
+  """Using this api, you can update the tags of products."""
+  saveProductTag(input: ProductTagInput!): ProductTag!
+  """Using this api, you can update the units of products."""
+  saveProductUnit(input: ProductUnitInput!): ProductUnit!
+  """Using this api, you can update the product volume discounts"""
+  saveProductVolumeDiscount(input: ProductVolumeDiscountInput!): ProductVolumeDiscount!
+  """
+  Using this api you can update the sales channel name, priceList Id and stockLocations properties.
+  """
+  saveSalesChannel(input: SalesChannelInput!): SalesChannel
+  """Using this api, you can save javascript script to a the storefront."""
+  saveStorefrontJSScript(input: StorefrontJSScriptInput!): StorefrontJSScript!
+  """Using this API, you can save a policy to the storefront."""
+  saveStorefrontPolicy(input: StorefrontPolicyInput!): StorefrontPolicy!
+  saveTaxSettings(input: TaxSettingsInput!): TaxSettings!
+  """Response indicating the status of operation."""
+  saveVariantPrices(
+    """Input to update sales channels list of the product."""
+    input: SaveVariantPricesInput!
+  ): Boolean!
+  """Using this api, you can update the variant types of products."""
+  saveVariantType(input: VariantTypeInput!): VariantType!
+  """Use this mutation to define new vendor."""
+  saveVendor(input: VendorInput!): Vendor!
+  """
+  Use this mutation to save webhooks by using multiple `scope` variables. After saving a webhook, **ikas** will start to push new webhooks to given url `endpoint`. If **endpoint** is unreachable or returns an error code other than `HTTP 200` **ikas** will try to push webhook for 3 times then stops sending webhook.
+  """
+  saveWebhook(input: WebhookInput!): [Webhook!]
+  updateCustomerB2BStatus(b2bStatus: CustomerB2BStatusEnum!, customerId: String!): Boolean!
+  """Use this mutation for order address information changes."""
+  updateOrderAddresses(input: UpdateOrderAddressesInput!): Order!
+  """
+  Use this mutation to cancel the fulfillment of the already created package for an order.
+  """
+  updateOrderLine(input: UpdateOrderInput!): Order!
+  """
+  Use this mutation to update the status of packages linked to an order and the status of the order based on the status of those packages.
+  """
+  updateOrderPackageStatus(input: UpdateOrderPackageStatusInput!): Order!
+  """Response indicating the status of operation."""
+  updateProductSalesChannelStatus(
+    """Input to update sales channels list of the product."""
+    input: [UpdateProductSalesChannelStatusInput!]!
+    """Id of the sales channel to update its sales channels."""
+    salesChannelId: String
+  ): Boolean!
+  updateSubscriptionStatus(customerId: String!, subscriptionStatus: CustomerEmailSubscriptionStatusesEnum!): Boolean!
+}
+
+input NewCouponInput {
+  applicableCustomerId: String
+  canCombineWithOtherCampaigns: Boolean!
+  code: String!
+  id: ID
+  usageLimit: Int
+  usageLimitPerCustomer: Int
+}
+
+type Order {
+  abandonedCartFlows: [AbandonedCartFlow!]
+  archived: Boolean!
+  attributes: [OrderAttributeValue!]
+  availableShippingMethods: [AvailableShippingMethod!]
+  """It is the billing address of the order."""
+  billingAddress: OrderAddress
+  """It is the `branch` information of the orders created via ikasPOS."""
+  branch: OrderBranch
+  """
+  It is the `branchSession` information of the orders created via ikasPOS.
+  """
+  branchSession: OrderBranchSession
+  branchSessionId: String
+  campaignOffers: [CartV2CampaignOffer!]
+  """
+  It is the cancel reason of the order. If the order has been cancelled, it indicates the cancellation reason of the order.
+  """
+  cancelReason: OrderCancelledReasonEnum
+  """
+  If the order has been cancelled, it indicates the cancellation date of the order.
+  """
+  cancelledAt: Timestamp
+  cartId: String
+  """Shows the status of the cart linked to the order."""
+  cartStatus: CartV2StatusEnum
+  checkoutId: String
+  """The client ip address."""
+  clientIp: String
+  couponCode: String
+  createdAt: Timestamp
+  """
+  Indicates who created the order. The order can be created by the customer or the store owner.
+  """
+  createdBy: CartCreatedByEnum
+  """It is the currency value of the order."""
+  currencyCode: String!
+  """A list of currency rate objects."""
+  currencyRates: [OrderCurrencyRate!]!
+  currencySymbol: String
+  """
+  Information about the customer. The order does not have to be a customer information. If the order was created by ikasPOS, the customer information may be null.
+  """
+  customer: OrderCustomer
+  customerGroups: [OrderCustomerGroup!]
+  customerId: String
+  """It shows the number of orders given by the relevant customer."""
+  customerOrderCount: Float
+  customerSegments: [OrderCustomerSegment!]
+  deleted: Boolean!
+  dueDate: Timestamp
+  edited: Boolean
+  giftCardLines: [OrderGiftCardLine!]
+  """
+  A list of gift package line objects, each containing information about a gift package pricing in the order.
+  """
+  giftPackageLines: [OrderGiftPackageLine!]
+  """An optional gift package note, can attach to the order."""
+  giftPackageNote: String
+  """It is the host where the order was created."""
+  host: String
+  id: ID!
+  """
+  A list of invoice objects, each containing information about an invoice.
+  """
+  invoices: [Invoice!]
+  """
+  Indicates whether there is a gift package in the order. **isGiftPackage** returns  `true` if the order has gift package
+  """
+  isGiftPackage: Boolean
+  itemCount: Float
+  lastActivityDate: Timestamp
+  marketingCampaignId: String
+  merchantId: String!
+  """
+  It is the reflection of the prices of the refunds and the items added later on the final order price.
+  """
+  netTotalFinalPrice: Float
+  """An optional note, can attach to the order."""
+  note: String
+  """
+  A list of adjustment objects, each containing information about a adjustment in the order.
+  """
+  orderAdjustments: [OrderAdjustment!]
+  """
+  A list of line item objects, each containing information about an item in the order.
+  """
+  orderLineItems: [OrderLineItem!]!
+  """
+  The position of the order in the store's order count starting from 1001. Order numbers are sequential and start from 1001.
+  """
+  orderNumber: String
+  """is the sequence value of the packages in the order."""
+  orderPackageSequence: Float
+  """It is the package status enum of the order"""
+  orderPackageStatus: OrderPackageStatusEnum
+  """A list of order package objects."""
+  orderPackages: [OrderPackage!]
+  """It is the payment status enum of the order"""
+  orderPaymentStatus: OrderPaymentStatusEnum
+  """
+  It is the sequence value of the order_number. The sequence value starts from 1 and an order with order number 1001 has a sequence value of 1.
+  """
+  orderSequence: Float
+  """It is the tag id list in the order."""
+  orderTagIds: [String!]
+  """The date the order was ordered."""
+  orderedAt: Timestamp
+  """
+  A list of payment method objects, each containing information about a payment method in the order.
+  """
+  paymentMethods: [OrderPaymentMethod!]
+  """Information about the `priceList` used when the order was created."""
+  priceList: OrderPriceList
+  priceListId: String
+  recoverEmailStatus: CheckoutRecoveryEmailStatusEnum
+  recoveryStatus: CheckoutRecoveryStatusEnum
+  """Information about the  `salesChannel` where the order was created."""
+  salesChannel: OrderSalesChannel!
+  salesChannelId: String
+  sessionInfo: OrderSessionInfo
+  """It is the shipping address of the order."""
+  shippingAddress: OrderAddress
+  """
+  A list of shipping line objects, each containing information about a shipping in the order.
+  """
+  shippingLines: [OrderShippingLine!]
+  """It is the shipping method enum of the order"""
+  shippingMethod: OrderShippingMethodEnum!
+  shippingSettingsId: String
+  shippingZoneRateId: String
+  sourceId: String
+  """It is the `staff` information of the orders created via ikasPOS."""
+  staff: OrderStaff
+  """It is the status enum of the order"""
+  status: OrderStatusEnum!
+  """It is the `stock location` information of the orders."""
+  stockLocation: OrderStockLocation
+  stockLocationId: String
+  """Information about the `storefront` where the order was created."""
+  storefront: OrderStorefront
+  storefrontId: String
+  """
+  Information about the `storefrontRouting` used by the storefront at the time the order was created.
+  """
+  storefrontRouting: OrderStorefrontRouting
+  storefrontRoutingId: String
+  """
+  Information about the `storefrontTheme` used by the storefront at the time the order was created.
+  """
+  storefrontTheme: OrderStorefrontTheme
+  storefrontThemeId: String
+  """
+  A list of tax line objects, tax line objects contain the taxes of the shippingLines, orderLineItems, and giftPackageLines.
+  """
+  taxLines: [OrderTaxLine!]
+  """It is the `terminalId`` information of the orders created via ikasPOS."""
+  terminalId: String
+  """
+  The total final price of the order resulting from the apply of `orderAdjustments` , `shippingLines`, and  `giftPackageLines` pricing to the order total price.
+  """
+  totalFinalPrice: Float!
+  """It is the sum of the net prices of the line items in the order."""
+  totalPrice: Float!
+  updatedAt: Timestamp
+  """
+  Details of the browsing client, including software and operating versions.
+  """
+  userAgent: String
+  workflowId: String
+  workflowName: String
+  workflowNodeId: String
+}
+
+type OrderAddress {
+  """The street address of the address."""
+  addressLine1: String!
+  """An optional additional field for the street address of the address."""
+  addressLine2: String
+  """The city information of the address."""
+  city: OrderAddressCity!
+  """The company of the person associated with the address."""
+  company: String
+  """The country information of the address."""
+  country: OrderAddressCountry!
+  """The district information of the address."""
+  district: OrderAddressDistrict
+  """The first name of the person associated with the address"""
+  firstName: String!
+  """The address"s id of the order address."""
+  id: String
+  """The identity number of the person associated with the address."""
+  identityNumber: String
+  """The address"s id of the order address."""
+  isDefault: Boolean!
+  """The last name of the person associated with the address"""
+  lastName: String!
+  """The phone of the person associated with the address."""
+  phone: String
+  """The postal code of the address."""
+  postalCode: String
+  """The region information of the address."""
+  region: OrderAddressRegion
+  """The state information of the address."""
+  state: OrderAddressState
+  """The tax number of the person associated with the address."""
+  taxNumber: String
+  """The tax office of the person associated with the address."""
+  taxOffice: String
+}
+
+type OrderAddressCity {
+  """It is the code of the city of the address."""
+  code: String
+  """It is the id of the city of the address."""
+  id: String
+  """It is the name of the city of the address."""
+  name: String!
+}
+
+input OrderAddressCityInput {
+  code: String
+  id: String
+  name: String!
+}
+
+type OrderAddressCountry {
+  """It is the code of the country of the address."""
+  code: String
+  """It is the id of the country of the address."""
+  id: String
+  """It is the two-letter code of the country of the address."""
+  iso2: String
+  """It is the three-letter code of the country of the address."""
+  iso3: String
+  """It is the name of the country of the address."""
+  name: String!
+}
+
+input OrderAddressCountryInput {
+  code: String
+  id: String
+  iso2: String
+  iso3: String
+  name: String!
+}
+
+type OrderAddressDistrict {
+  """It is the code of the district of the address."""
+  code: String
+  """It is the id of the district of the address."""
+  id: String
+  """It is the name of the district of the address."""
+  name: String
+}
+
+input OrderAddressDistrictInput {
+  code: String
+  id: String
+  name: String
+}
+
+input OrderAddressInput {
+  """The street address of the address."""
+  addressLine1: String!
+  """An optional additional field for the street address of the address."""
+  addressLine2: String
+  """The name of the city of the address."""
+  city: OrderAddressCityInput!
+  """The company of the person associated with the address."""
+  company: String
+  """The name of the country of the address."""
+  country: OrderAddressCountryInput!
+  """The name of the district of the address."""
+  district: OrderAddressDistrictInput
+  """The first name of the person associated with the address"""
+  firstName: String!
+  """
+  If the address to be updated is registered in ikas, this field must be filled. If the Id field is sent blank, a new address is generated.
+  """
+  id: String
+  """The identity number of the person associated with the address."""
+  identityNumber: String
+  """
+  If the address is to be saved as default, this field can be sent as `true`.
+  """
+  isDefault: Boolean!
+  """The last name of the person associated with the address"""
+  lastName: String!
+  """The phone of the person associated with the address."""
+  phone: String
+  """The postal code of the address."""
+  postalCode: String
+  """The name of the region of the address."""
+  region: OrderAddressRegionInput
+  """The name of the state of the address."""
+  state: OrderAddressStateInput
+  """The tax number of the person associated with the address."""
+  taxNumber: String
+  """The tax office of the person associated with the address."""
+  taxOffice: String
+}
+
+type OrderAddressRegion {
+  createdAt: Timestamp
+  deleted: Boolean
+  """It is the id of the region of the address."""
+  id: String!
+  """It is the name of the region of the address."""
+  name: String!
+  updatedAt: Timestamp
+}
+
+input OrderAddressRegionInput {
+  id: String!
+  name: String!
+}
+
+type OrderAddressState {
+  """It is the code of the state of the address."""
+  code: String
+  """It is the id of the state of the address."""
+  id: String
+  """It is the name of the state of the address."""
+  name: String
+}
+
+input OrderAddressStateInput {
+  code: String
+  id: String
+  name: String
+}
+
+type OrderAdjustment {
+  """
+  It is the adjustment amount in the order. This amount can be positive or negative.
+  """
+  amount: Float!
+  amountType: OrderAmountTypeEnum!
+  """
+  A list of order line items, each containing information about a order line item in the order.
+  """
+  appliedOrderLines: [OrderAdjustmentAppliedOrderLine!]
+  """
+  If the adjustment is associated to the campaign, it will show the campaign id.
+  """
+  campaignId: String
+  """
+  If the adjustment is associated to the campaign, it will show the campaign id.
+  """
+  campaignType: CampaignTypeEnum
+  """It is the coupon id generated depending on the campaign."""
+  couponId: String
+  """It is the name of the adjustment."""
+  name: String!
+  """
+  It is the order of the adjustment. Adjustments are applied in this order.
+  """
+  order: Float!
+  """The amount is the id of the transaction."""
+  transactionId: String
+  type: OrderAdjustmentEnum!
+}
+
+type OrderAdjustmentAppliedOrderLine {
+  """Is he amount of the applied adjustment."""
+  amount: Float!
+  """
+  It is the quantity of variants within the order line item to which the adjustment is applied.
+  """
+  appliedQuantity: Float!
+  """
+  It is the quantity of variants within the order line item to which the adjustment is applied.
+  """
+  isAutoCreated: Boolean
+  """
+  It is the id of the order line item to which the adjustment is applied.
+  """
+  orderLineId: String!
+}
+
+enum OrderAdjustmentEnum {
+  DECREMENT
+  INCREMENT
+}
+
+input OrderAdjustmentInput {
+  """It is the amount of the order adjustment."""
+  amount: Float!
+  """It is the amount type of the order adjustment"""
+  amountType: OrderAmountTypeEnum!
+  """It is the campaign information that adjustment depends on."""
+  campaignId: String
+  """
+  It is the coupon information of the campaign that adjustment is connected to.
+  """
+  couponId: String
+  """It is the name of the order adjustment."""
+  name: String!
+  """It is the order information in which the adjustment will be applied."""
+  order: Float!
+  """It is the type enum of the order adjustment"""
+  type: OrderAdjustmentEnum!
+}
+
+enum OrderAmountTypeEnum {
+  AMOUNT
+  RATIO
+}
+
+type OrderAttributeValue {
+  """It is the attribute id"""
+  orderAttributeId: String
+  """It is the attribute option id"""
+  orderAttributeOptionId: String
+  """It is the attribute value"""
+  value: String
+}
+
+type OrderBranch {
+  """It is the id of the branch where the order was created."""
+  id: String!
+  """It is the name of the branch where the order was created."""
+  name: String
+}
+
+type OrderBranchSession {
+  """It is the id of the branch session where the order was created."""
+  id: String!
+  """It is the name of the branch session where the order was created."""
+  name: String
+}
+
+enum OrderCancelledReasonEnum {
+  CUSTOMER
+  DECLINED
+  INVENTORY
+  OTHER
+}
+
+type OrderCurrencyRate {
+  """It is the code of the currency. """
+  code: String!
+  """It is the original rate of the currency."""
+  originalRate: Float!
+  """It is the rate of the currency."""
+  rate: Float!
+}
+
+type OrderCustomer {
+  """It is the email of the customer who created the order."""
+  email: String
+  """It is the first name of the customer who created the order."""
+  firstName: String
+  """It is the full name name of the customer who created the order."""
+  fullName: String
+  """It is the id of the customer who created the order."""
+  id: String
+  """
+  Indicates whether the order was created by a new customer with no email record. **isGuestCheckout** returns true if the order was created without customer email information.
+  """
+  isGuestCheckout: Boolean
+  """It is the last name of the customer who created the order."""
+  lastName: String
+  notificationsAccepted: Boolean
+  """It is the phone number of the customer who created the order."""
+  phone: String
+  """It is the preferred language of the customer who created the order."""
+  preferredLanguage: String
+}
+
+type OrderCustomerGroup {
+  """It is the customer's group id"""
+  id: String!
+  """It is the customer's group name"""
+  name: String!
+}
+
+input OrderCustomerInput {
+  """It is the email of the customer who created the order."""
+  email: String
+  """It is the first name of the customer who created the order."""
+  firstName: String
+  id: ID
+  """It is the last name of the customer who created the order."""
+  lastName: String
+}
+
+type OrderCustomerSegment {
+  """It is the customer's segment id"""
+  id: String!
+  """It is the customer's segment name"""
+  name: String!
+}
+
+type OrderGiftCardLine {
+  amount: Float!
+  code: String!
+  giftCardId: String!
+  id: String!
+}
+
+type OrderGiftPackageLine {
+  """
+  Indicates whether the gift cost is refunded if the order is refunded. **isRefunded** returns `true` if the amount is refunded. 
+  """
+  isRefunded: Boolean
+  """It is the price of the order gift package line."""
+  price: Float!
+  priceListId: String
+  """It is the tax value of the order gift package line price."""
+  taxValue: Float
+}
+
+type OrderLineBaseUnit {
+  """It is the amount of the unit."""
+  baseAmount: Float!
+  """It is the type of the unit of the variant."""
+  type: ProductUnitTypeEnum!
+  """It is the amount of the unit."""
+  unit: OrderLineVariantUnitType
+}
+
+type OrderLineBundleVariant {
+  """It is the barcode list of the variant."""
+  barcodeList: [String!]
+  """Information about the brand of variant."""
+  baseUnit: OrderLineBaseUnit
+  """Information about the brand of variant."""
+  brand: OrderLineVariantBrand
+  """
+  A list of category objects, each containing information about a category in the variant.
+  """
+  categories: [OrderLineVariantCategory!]
+  """It is the id of the product file."""
+  fileId: String
+  """It is the hasCode of the variant."""
+  hsCode: String
+  """It is the id of the variant."""
+  id: String
+  """It is the main image id of the variant."""
+  mainImageId: String
+  """It is the name of the variant."""
+  name: String!
+  """
+  It is the price list of the variant. Different price lists may have different pricing.
+  """
+  prices: [OrderLineVariantPrice!]
+  """It is the product id of the variant."""
+  productId: String
+  """It is the product volume discount id of the product."""
+  productVolumeDiscountId: String
+  """It is the sku of the variant."""
+  sku: String
+  """
+  It is the slug of the variant. The slug value is unique each variant and product.
+  """
+  slug: String
+  """It is the the tag id list """
+  tagIds: [String!]
+  """
+  A list of tag objects, each containing information about a tag in the variant.
+  """
+  tags: [OrderLineVariantTag!]
+  """It is the tax value of the variant."""
+  taxValue: Float @deprecated(reason: "Will be removed use OrderLineItem.taxValue")
+  type: Float
+  """Information about the brand of variant."""
+  unit: OrderLineVariantUnit
+  """It is the variant values of the variant."""
+  variantValues: [OrderLineVariantVariantValues!]
+  weight: Float
+}
+
+type OrderLineDiscount {
+  amount: Float!
+  amountType: OrderAmountTypeEnum!
+  campaignOfferId: String
+  campaignOfferProductId: String
+  maxApplicableQuantity: Float
+  productVolumeDiscountId: String
+  reason: String
+}
+
+input OrderLineDiscountInput {
+  """It is the amount of the discount."""
+  amount: Float!
+  """It is the amount type enum."""
+  amountType: OrderAmountTypeEnum!
+  maxApplicableQuantity: Float
+  """It is the reason of the discount."""
+  reason: String
+}
+
+type OrderLineItem {
+  """
+  It is the option information of the variant value in the order line item.
+  """
+  bundleProductSettings: BundleProductOrderLine
+  createdAt: Timestamp
+  """It is the currency code of the order line item."""
+  currencyCode: String
+  currencySymbol: String
+  deleted: Boolean!
+  """
+  Information about the discount. Shows the details of the discount applied to the order line item.
+  """
+  discount: OrderLineDiscount
+  """It is the discount price of the order line item."""
+  discountPrice: Float
+  """
+  After creating the order, it indicates whether the relevant line has been added/removed by the store staff.
+  """
+  edited: Boolean
+  """
+  It is the final price of the order line item. If the discount price is less than the sell price, the final price is equal to the discount price.
+  """
+  finalPrice: Float
+  """It is the unit price of the order line item."""
+  finalUnitPrice: Float
+  id: ID!
+  """
+  It is the option information of the variant value in the order line item.
+  """
+  options: [OrderLineOption!]
+  """
+  It is the original order line item id of the line item. If the line item is derived from another line item, this field is filled.
+  """
+  originalOrderLineItemId: String
+  """It is the selling price of the order line item."""
+  price: Float!
+  """It is the quantity of variant in the order line item."""
+  quantity: Float!
+  sourceId: String
+  """It is the status enum of the order line item"""
+  status: OrderLineItemStatusEnum!
+  """
+  It is the date when the last status of the order line item was updated.
+  """
+  statusUpdatedAt: Timestamp
+  """
+  It is the stock location id of the variant value in the order line item.
+  """
+  stockLocationId: String
+  """It is the tax value of the order line item."""
+  taxValue: Float
+  """It is the unit price of the order line item."""
+  unitPrice: Float
+  updatedAt: Timestamp
+  """Information about the variant of the order line item."""
+  variant: OrderLineVariant!
+}
+
+input OrderLineItemInput {
+  """It is the bundle product settings in the order line item."""
+  bundleProductSettings: BundleProductOrderLineInput
+  createdAt: Timestamp
+  deleted: Boolean = false
+  """It is the discount information that will be applied to the line item."""
+  discount: OrderLineDiscountInput
+  """It is the discount price of the line item."""
+  discountPrice: Float
+  id: ID
+  """It is the options information in the order line item."""
+  options: [OrderLineOptionInput!]
+  """It is the price of the line item."""
+  price: Float!
+  """It is the quantity of the line item."""
+  quantity: Float!
+  """
+  It is the source id of the line item. If the order came from the marketplace, it shows the line id in the marketplace.
+  """
+  sourceId: String
+  updatedAt: Timestamp
+  """It is the variant information in the order line item."""
+  variant: OrderLineVariantInput!
+}
+
+enum OrderLineItemStatusEnum {
+  CANCELLED
+  CANCEL_REJECTED
+  CANCEL_REQUESTED
+  DELIVERED
+  FULFILLED
+  REFUNDED
+  REFUND_REJECTED
+  REFUND_REQUESTED
+  REFUND_REQUEST_ACCEPTED
+  UNFULFILLED
+}
+
+type OrderLineOption {
+  """It is the name of order line option in the order line item."""
+  name: String!
+  """It is the product option id of the product in the order line item."""
+  productOptionId: String!
+  """It is the product option set id of the product in the order line item."""
+  productOptionsSetId: String!
+  """It is the type of the order line option."""
+  type: ProductOptionTypeEnum!
+  values: [OrderLineOptionValue!]!
+}
+
+input OrderLineOptionInput {
+  """It is the option id."""
+  productOptionId: String!
+  """
+  It is the options set id information that option is connected to.
+  * Is the entered id must be exist in ikas.
+  """
+  productOptionsSetId: String!
+  """
+  A list of option value objects, each containing input about an option value.
+  """
+  values: [OrderLineOptionValueInput!]!
+}
+
+type OrderLineOptionValue {
+  name: String
+  price: Float
+  priceType: ProductOptionPriceTypeEnum
+  value: String!
+}
+
+input OrderLineOptionValueInput {
+  """It is the price of the order line option"""
+  price: Float
+  """It is the value of the order line option"""
+  value: String!
+}
+
+type OrderLineVariant {
+  """It is the barcode list of the variant."""
+  barcodeList: [String!]
+  """Information about the brand of variant."""
+  baseUnit: OrderLineBaseUnit
+  """Information about the brand of variant."""
+  brand: OrderLineVariantBrand
+  """Shows the list of bundle products in the line item."""
+  bundleProducts: [OrderLineVariantBundleProductModel!]
+  """
+  A list of category objects, each containing information about a category in the variant.
+  """
+  categories: [OrderLineVariantCategory!]
+  """It is the id of the product file."""
+  fileId: String
+  """It is the hasCode of the variant."""
+  hsCode: String
+  """It is the id of the variant."""
+  id: String
+  """It is the main image id of the variant."""
+  mainImageId: String
+  """It is the name of the variant."""
+  name: String!
+  """
+  It is the price list of the variant. Different price lists may have different pricing.
+  """
+  prices: [OrderLineVariantPrice!]
+  """It is the product id of the variant."""
+  productId: String
+  """It is the product volume discount id of the product."""
+  productVolumeDiscountId: String
+  """It is the sku of the variant."""
+  sku: String
+  """
+  It is the slug of the variant. The slug value is unique each variant and product.
+  """
+  slug: String
+  """It is the the tag id list """
+  tagIds: [String!]
+  """
+  A list of tag objects, each containing information about a tag in the variant.
+  """
+  tags: [OrderLineVariantTag!]
+  """It is the tax value of the variant."""
+  taxValue: Float @deprecated(reason: "Will be removed use OrderLineItem.taxValue")
+  type: Float
+  """Information about the brand of variant."""
+  unit: OrderLineVariantUnit
+  """It is the variant values of the variant."""
+  variantValues: [OrderLineVariantVariantValues!]
+  weight: Float
+}
+
+type OrderLineVariantBrand {
+  """It is the id of the brand of the variant."""
+  id: String!
+  """It is the name of the category."""
+  name: String!
+}
+
+type OrderLineVariantBundleProductModel {
+  """
+  It indicates whether the variant price within the package product will be reflected in the order line or not.
+  """
+  addToBundleBasePrice: Boolean
+  """
+  It is the value that indicates whether the product has been deleted or not.
+  """
+  deleted: Boolean
+  """It is the final price of the variant."""
+  discountPrice: Float
+  """It is the discount ratio of the variant."""
+  discountRatio: Float
+  """It is the final price of the variant."""
+  finalPrice: Float
+  """It is the unit price of the variant"""
+  finalUnitPrice: Float
+  id: String!
+  """
+  It is the option information of the variant value in the order line item.
+  """
+  options: [OrderLineOption!]
+  """Indicates the order of the product in the bundle."""
+  order: Float!
+  """It is the price of the variant."""
+  price: Float!
+  """It is the quantity of the variant."""
+  quantity: Float!
+  """It is the tax value of the variant."""
+  taxValue: Float
+  """It is the unit price of the variant"""
+  unitPrice: Float
+  """Information about the variant of the order line item."""
+  variant: OrderLineBundleVariant!
+}
+
+type OrderLineVariantCategory {
+  """It is the path of the category."""
+  categoryPath: [OrderLineVariantCategoryPath!]
+  """It is the id of the category of the variant."""
+  id: String!
+  """It is the name of the category."""
+  name: String!
+}
+
+type OrderLineVariantCategoryPath {
+  """It is the id of the category of the variant."""
+  id: String!
+  """It is the name of the category."""
+  name: String!
+}
+
+input OrderLineVariantInput {
+  """
+  It is the id of the variant. This field can be left blank if a product that is not registered in ikas will be sold.
+  * Is the entered id must be exist in ikas.
+  """
+  id: String
+  """It is the name of the variant."""
+  name: String
+}
+
+type OrderLineVariantPrice {
+  """It is the buy price of variant."""
+  buyPrice: Float
+  """It is the currency code of variant."""
+  currency: String
+  currencySymbol: String
+  """It is the discount price of variant."""
+  discountPrice: Float
+  """It is the id of the price list to which the variant is associated."""
+  priceListId: String
+  """It is the sell price of variant."""
+  sellPrice: Float!
+  """It is the unit price of variant."""
+  unitPrice: Float
+}
+
+type OrderLineVariantTag {
+  """It is the id of the tag of the variant."""
+  id: String!
+  """It is the name of the tag."""
+  name: String!
+}
+
+type OrderLineVariantUnit {
+  """It is the amount of the unit."""
+  amount: Float!
+  """It is the type of the unit of the variant."""
+  type: ProductUnitTypeEnum!
+}
+
+type OrderLineVariantUnitType {
+  """It is the id of the category of the variant."""
+  id: String!
+  """It is the amount of the unit."""
+  name: String!
+}
+
+type OrderLineVariantVariantValues {
+  """
+  It is the order of variant value. The variant value order starts from 0.
+  """
+  order: Float!
+  """
+  It is the order of variant value. The variant value order starts from 0.
+  """
+  variantTypeId: String!
+  """
+  It is the order of variant value. The variant value order starts from 0.
+  """
+  variantTypeName: String
+  """
+  It is the order of variant value. The variant value order starts from 0.
+  """
+  variantValueId: String!
+  """
+  It is the order of variant value. The variant value order starts from 0.
+  """
+  variantValueName: String
+}
+
+type OrderPackage {
+  createdAt: Timestamp
+  deleted: Boolean!
+  """
+  If the package was sent via the cargo application and received an error, this field is filled with an error message.
+  """
+  errorMessage: String
+  id: ID!
+  """An optional note, can attach to the order package."""
+  note: String
+  """It is the id list of the order line items in the package."""
+  orderLineItemIds: [String!]!
+  """It is the fulfill status of the package"""
+  orderPackageFulfillStatus: OrderPackageFulfillStatusEnum!
+  """
+  It is the number of order package. Order package number is created with the order number - order package sequence format.
+  """
+  orderPackageNumber: String!
+  sourceId: String
+  stockLocationId: String!
+  """
+  It is the stock location id information where the package will be shipped.
+  """
+  trackingInfo: TrackingInfo
+  updatedAt: Timestamp
+}
+
+enum OrderPackageFulfillStatusEnum {
+  CANCELLED
+  CANCEL_REJECTED
+  CANCEL_REQUESTED
+  DELIVERED
+  ERROR
+  FULFILLED
+  READY_FOR_PICK_UP
+  READY_FOR_SHIPMENT
+  REFUNDED
+  REFUND_REJECTED
+  REFUND_REQUESTED
+  REFUND_REQUEST_ACCEPTED
+  UNABLE_TO_DELIVER
+}
+
+enum OrderPackageStatusEnum {
+  CANCELLED
+  CANCEL_REJECTED
+  CANCEL_REQUESTED
+  DELIVERED
+  FULFILLED
+  PARTIALLY_CANCELLED
+  PARTIALLY_DELIVERED
+  PARTIALLY_FULFILLED
+  PARTIALLY_READY_FOR_SHIPMENT
+  PARTIALLY_REFUNDED
+  READY_FOR_PICK_UP
+  READY_FOR_SHIPMENT
+  REFUNDED
+  REFUND_REJECTED
+  REFUND_REQUESTED
+  REFUND_REQUEST_ACCEPTED
+  UNABLE_TO_DELIVER
+  UNFULFILLED
+}
+
+input OrderPackageStatusEnumInputFilter {
+  """`equal`. The filter used for equality."""
+  eq: OrderPackageStatusEnum
+  """Returns a boolean indicating whether a specified value is in an array."""
+  in: [OrderPackageStatusEnum]
+  """`not equal`. The filter used for not equality."""
+  ne: OrderPackageStatusEnum
+  """
+  Returns a boolean indicating whether a specified value is not in an array.
+  """
+  nin: [OrderPackageStatusEnum]
+}
+
+type OrderPaginationResponse {
+  """
+  Returns the first three records of each page in the records returned as a response.
+  For example, **let's say page = 3, limit = 30, count = 3.**
+  The records that will return as a response are the records **between 60-62.**
+  """
+  count: Int!
+  data: [Order!]!
+  """
+  In the records returned as Response, it shows whether there are any more records or not. For example, let's say our page field is three and our limit field is thirty. Records between 60 and 90 will be returned. If hasNext is `true` despite these records, **it means there are more records.** If hasNext is `false`, it means there are a total of **90 records.**
+  """
+  hasNext: Boolean!
+  """
+  The maximum number of data you want to see on a page in the records returned as a response.
+  For example, if the limit is **20**, the data will be displayed ** as 20 each. **
+  :::note
+  min 1, max 200 values can be given. If no value is entered, default 50 is accepted.
+  :::
+  """
+  limit: Int!
+  """
+  The number of the page you want to see in the records that return as response.
+  For example: We entered the page field as **3**.And let our limit field be **30**.
+  The records that will return as a response are the records **between 60-90.**
+  :::note
+  If no value is entered, default 1 is accepted.
+  :::
+  """
+  page: Int!
+}
+
+type OrderPaymentMethod {
+  """
+  The indication of whether the payment was received through a gateway that is part of the payment group and does not have primary priority
+  """
+  isAlternativeGateway: Boolean
+  """It is the gateway code of the order payment method."""
+  paymentGatewayCode: String
+  """It is the gateway name of the order payment method."""
+  paymentGatewayId: String
+  """It is the gateway name of the order payment method."""
+  paymentGatewayName: String
+  """It is the amount charged by the payment method."""
+  price: Float!
+  """It is the type enum of the order payment method."""
+  type: PaymentMethodTypeEnum!
+}
+
+input OrderPaymentMethodEnumFilterInput {
+  """`equal`. The filter used for equality."""
+  eq: PaymentMethodTypeEnum
+  """Returns a boolean indicating whether a specified value is in an array."""
+  in: [PaymentMethodTypeEnum]
+  """`not equal`. The filter used for not equality."""
+  ne: PaymentMethodTypeEnum
+  """
+  Returns a boolean indicating whether a specified value is not in an array.
+  """
+  nin: [PaymentMethodTypeEnum]
+}
+
+enum OrderPaymentStatusEnum {
+  FAILED
+  OVER_PAID
+  PAID
+  PARTIALLY_PAID
+  REFUNDED
+  WAITING
+}
+
+input OrderPaymentStatusEnumInputFilter {
+  """`equal`. The filter used for equality."""
+  eq: OrderPaymentStatusEnum
+  """Returns a boolean indicating whether a specified value is in an array."""
+  in: [OrderPaymentStatusEnum]
+  """`not equal`. The filter used for not equality."""
+  ne: OrderPaymentStatusEnum
+  """
+  Returns a boolean indicating whether a specified value is not in an array.
+  """
+  nin: [OrderPaymentStatusEnum]
+}
+
+type OrderPriceList {
+  """It is the id of the price list."""
+  id: String!
+  """It is the name of the price list."""
+  name: String
+}
+
+input OrderRefundBranchInfoInput {
+  branchSessionId: String!
+  terminalId: String!
+}
+
+input OrderRefundInput {
+  branchInfo: OrderRefundBranchInfoInput
+  forceRefund: Boolean
+  orderId: String!
+  orderRefundLines: [OrderRefundLineInput!]!
+  orderRefundTransactions: [OrderRefundTransactionInput!]
+  reason: String
+  refundGift: Boolean
+  refundShipping: Boolean
+  sendNotificationToCustomer: Boolean
+  stockLocationId: String
+}
+
+input OrderRefundLineInput {
+  orderLineItemId: String!
+  price: Float!
+  quantity: Float!
+  restockItems: Boolean! = true
+}
+
+input OrderRefundTransactionInput {
+  amount: Float!
+  transactionId: String!
+}
+
+type OrderSalesChannel {
+  """It is the sales channel id where the order was created."""
+  id: String!
+  """It is the sales channel name where the order was created."""
+  name: String
+  """It is the sales channel type where the order was created."""
+  type: Float
+}
+
+type OrderSessionInfo {
+  countryCode: String
+  durationMS: Float
+  end: Timestamp
+  host: String
+  ip: String
+  referer: String
+  salesChannelId: String
+  sessionId: String
+  start: Timestamp
+  storefrontId: String
+  trafficSource: OrderSessionInfoTrafficSource
+  userAgent: OrderSessionUserAgent
+  utm: OrderSessionUTM
+  visitorId: String
+}
+
+type OrderSessionInfoTrafficSource {
+  source: String
+  type: SFAnalyticsTrafficSourceEnum!
+}
+
+type OrderSessionUTM {
+  campaign: String
+  content: String
+  medium: String
+  source: String
+  term: String
+}
+
+type OrderSessionUserAgent {
+  deviceType: UserAgentDeviceType!
+  name: String!
+  os: String!
+}
+
+type OrderShippingLine {
+  """It is the final price after discounts are applied."""
+  finalPrice: Float!
+  """
+  Indicates whether the shipping cost is refunded if the order is refunded. **isRefunded** returns `true` if the amount is refunded.
+  """
+  isRefunded: Boolean
+  """
+  Indicates whether the shipping cost is refunded if the order is refunded. **isRefunded** returns `true` if the amount is refunded.
+  """
+  paymentMethod: PaymentMethodTypeEnum
+  """It is the price of the order shipping line."""
+  price: Float!
+  priceListId: String
+  """It is the shipping settings id of the order shipping line."""
+  shippingSettingsId: String
+  """It is the shipping zone rate id of the order shipping line."""
+  shippingZoneRateId: String
+  """It is the tax value of the order shipping line price."""
+  taxValue: Float
+  """It is the title of the order shipping line."""
+  title: String!
+  """The amount is the id of the transaction."""
+  transactionId: String
+}
+
+input OrderShippingLineInput {
+  """It is the price of the order shipping line."""
+  price: Float!
+  priceListId: String
+  """It is the tax value of the order shipping line."""
+  taxValue: Float
+  """It is the title of the order shipping line."""
+  title: String!
+}
+
+enum OrderShippingMethodEnum {
+  CLICK_AND_COLLECT
+  DIGITAL_DELIVERY
+  NO_SHIPMENT
+  SHIPMENT
+}
+
+input OrderShippingMethodEnumFilterInput {
+  """`equal`. The filter used for equality."""
+  eq: OrderShippingMethodEnum
+  """Returns a boolean indicating whether a specified value is in an array."""
+  in: [OrderShippingMethodEnum]
+  """`not equal`. The filter used for not equality."""
+  ne: OrderShippingMethodEnum
+  """
+  Returns a boolean indicating whether a specified value is not in an array.
+  """
+  nin: [OrderShippingMethodEnum]
+}
+
+type OrderStaff {
+  """It is the email of the staff who created the order."""
+  email: String!
+  """It is the first name of the staff who created the order."""
+  firstName: String!
+  """It is the first name of the staff who created the order."""
+  id: String!
+  """It is the last name of the staff who created the order."""
+  lastName: String!
+}
+
+input OrderStaffInput {
+  """It is the email of the staff who created the order."""
+  email: String!
+  """It is the first name of the staff who created the order."""
+  firstName: String!
+  """It is the first name of the staff who created the order."""
+  id: String!
+  """It is the last name of the staff who created the order."""
+  lastName: String!
+}
+
+enum OrderStatusEnum {
+  CANCELLED
+  CREATED
+  DRAFT
+  PARTIALLY_CANCELLED
+  PARTIALLY_REFUNDED
+  REFUNDED
+  REFUND_REJECTED
+  REFUND_REQUESTED
+  WAITING_UPSELL_ACTION
+}
+
+input OrderStatusEnumInputFilter {
+  """`equal`. The filter used for equality."""
+  eq: OrderStatusEnum
+  """Returns a boolean indicating whether a specified value is in an array."""
+  in: [OrderStatusEnum]
+  """`not equal`. The filter used for not equality."""
+  ne: OrderStatusEnum
+  """
+  Returns a boolean indicating whether a specified value is not in an array.
+  """
+  nin: [OrderStatusEnum]
+}
+
+type OrderStockLocation {
+  """It is the id of the stock location of the merchant."""
+  id: String!
+  """It is the name of the stock location."""
+  name: String!
+}
+
+type OrderStorefront {
+  """It is the storefront id where the order was created."""
+  id: String!
+  """It is the storefront name id where the order was created."""
+  name: String
+}
+
+type OrderStorefrontRouting {
+  """It is the domain of the storefront routing."""
+  domain: String
+  dynamicCurrencySettings: OrderStorefrontRoutingDynamicCurrencySettings
+  """
+  It is the storefront routing id used by the storefront when the order was created.
+  """
+  id: String!
+  """It is the locale of the storefront routing."""
+  locale: String
+  """It is the path of the storefront routing."""
+  path: String
+  """It is the price list id that associated on the storefront routing."""
+  priceListId: String
+  salesChannelId: String
+}
+
+type OrderStorefrontRoutingDynamicCurrencySettings {
+  """One of '.x0' | '.x9' | '.00' | '.90' | '.99' | '0.00' | '9.90'"""
+  roundingFormat: String
+  targetCurrencyCode: String!
+}
+
+type OrderStorefrontTheme {
+  """
+  It is the theme id customized by the merchant used by the storefront when the order was created.
+  """
+  id: String!
+  """
+  It is the theme theme name customized by the merchant used by the storefront when the order was created.
+  """
+  name: String
+  """
+  It is the ikas theme id used by the storefront when the order was created.
+  """
+  themeId: String
+  """
+  It is the ikas theme version id used by the storefront when the order was created.
+  """
+  themeVersionId: String
+}
+
+type OrderTag {
+  createdAt: Timestamp
+  deleted: Boolean!
+  id: ID!
+  name: String!
+  updatedAt: Timestamp
+}
+
+input OrderTagInput {
+  createdAt: Timestamp
+  deleted: Boolean = false
+  id: ID
+  name: String!
+  updatedAt: Timestamp
+}
+
+type OrderTaxLine {
+  """It is the price of the order tax."""
+  price: Float!
+  """
+  It is the percentage of the slice to which the calculated tax amount belongs.
+  """
+  rate: Float!
+}
+
+input OrderTransactionInput {
+  amount: Float!
+  paymentGatewayId: String
+}
+
+input PaginationInput {
+  """
+  The maximum number of data you want to see on a page in the records returned as a response.
+  For example, if the limit is **20**, the data will be displayed ** as 20 each. **
+  :::note
+  min 1, max 200 values can be given. If no value is entered, default 50 is accepted.
+  :::
+  """
+  limit: Int = 50
+  """
+  The number of the page you want to see in the records that return as response.
+  For example: We entered the page field as **3**.And let our limit field be **30**.
+  The records that will return as a response are the records **between 60-90.**
+  :::note
+  If no value is entered, default 1 is accepted.
+  :::
+  """
+  page: Int = 1
+}
+
+type PaymentGateway {
+  additionalPrices: [AdditionalPrice!]
+  availableCountries: [String!]
+  code: String!
+  createdAt: Timestamp
+  deleted: Boolean!
+  description: String
+  group: PaymentGatewayGroup
+  id: ID!
+  isPassive: Boolean
+  logoUrl: String
+  masterPassClientId: String
+  name: String!
+  paymentGatewayProviderId: String
+  paymentMethodType: PaymentMethodTypeEnum!
+  paymentMethods: [PaymentGatewayPaymentMethod!]!
+  settings: [PaymentGatewaySettings!]
+  supportedCurrencies: [String!]
+  testMode: Boolean!
+  translations: [PaymentGatewayTranslation!]
+  type: PaymentGatewayTypeEnum!
+  updatedAt: Timestamp
+}
+
+enum PaymentGatewayAdditionalPriceTypeEnum {
+  DECREMENT
+  INCREMENT
+}
+
+type PaymentGatewayGroup {
+  key: String!
+  order: Float!
+}
+
+type PaymentGatewayPaymentMethod {
+  allowed: Boolean
+  enabled: Boolean
+  externalId: String
+  externalStoreIds: [String!]
+  logoUrl: String
+  name: String!
+}
+
+type PaymentGatewaySettings {
+  label: String!
+  order: Float!
+  type: PaymentGatewaySettingsTypeEnum!
+  value: String
+}
+
+enum PaymentGatewaySettingsTypeEnum {
+  BOOLEAN
+  NUMBER
+  PASSWORD
+  TEXT
+}
+
+enum PaymentGatewayTransactionFeeTypeEnum {
+  AMOUNT
+  RATIO
+}
+
+type PaymentGatewayTranslation {
+  description: String
+  locale: String
+  name: String
+}
+
+enum PaymentGatewayTypeEnum {
+  EXTERNAL
+  INTERNAL
+  THIRD_PARTY
+}
+
+enum PaymentMethodTypeEnum {
+  APP_PAYMENT
+  BANK_REDIRECT
+  BUY_ONLINE_PAY_AT_STORE
+  CASH
+  CASH_ON_DELIVERY
+  CREDIT_CARD
+  CREDIT_CARD_ON_DELIVERY
+  DIRECT_DEBIT
+  GIFT_CARD
+  MONEY_ORDER
+  OTHER
+  PAY_LATER
+  SLICE_IT
+  WALLET
+}
+
+type PriceList {
+  addProductsAutomatically: Boolean
+  createdAt: Timestamp
+  """The currency of the product's price list."""
+  currency: String!
+  currencyCode: String
+  currencySymbol: String
+  deleted: Boolean!
+  id: ID!
+  """It is the name of the price list of the product."""
+  name: String!
+  ruleList: [PriceListRuleList!]
+  """Type of price price list"""
+  type: PriceListTypeEnum
+  updatedAt: Timestamp
+}
+
+type PriceListCurrencyRateSettings {
+  amount: Float
+  type: PriceListCurrencyRateTypeEnum!
+}
+
+"""Price List Currency Rate Type Enum"""
+enum PriceListCurrencyRateTypeEnum {
+  CURRENT_RATE
+  CUSTOM_RATE
+}
+
+type PriceListCurrencySettings {
+  """One of '.x0' | '.x9' | '.00' | '.90' | '.99' | '0.00'"""
+  roundingFormat: String
+}
+
+type PriceListRuleList {
+  basePriceListId: String
+  currencyRateSettings: PriceListCurrencyRateSettings
+  currencySettings: PriceListCurrencySettings!
+  rules: [PriceListRules!]!
+}
+
+type PriceListRules {
+  amount: Float!
+  amountType: PriceListRulesAmountTypeEnum!
+  operationType: PriceListRulesOperationTypeEnum!
+}
+
+"""Price List Rules Amount Type Enum"""
+enum PriceListRulesAmountTypeEnum {
+  AMOUNT
+  RATIO
+}
+
+"""Price List Rules Operation Type Enum"""
+enum PriceListRulesOperationTypeEnum {
+  DECREASE
+  INCREASE
+}
+
+"""Price List Type Enum"""
+enum PriceListTypeEnum {
+  DYNAMIC
+  DYNAMIC_RATE
+  MANUAL
+}
+
+type Product {
+  """List of product attributes."""
+  attributes: [ProductAttributeValue!]
+  """Base unit of the product."""
+  baseUnit: ProductBaseUnitModel
+  """Brand of the product."""
+  brand: SimpleProductBrand
+  """Brand id of the product."""
+  brandId: String
+  """List of categories of the product."""
+  categories: [SimpleCategory!]
+  """List category identifiers of the product."""
+  categoryIds: [String!]
+  createdAt: Timestamp
+  deleted: Boolean!
+  """Description of the product."""
+  description: String
+  dynamicPriceListIds: [String!]
+  googleTaxonomyId: String
+  """
+  This is the variant type id that can be used to group variants by a specific variant type id.
+  """
+  groupVariantsByVariantTypeId: String
+  """List of hidden sales channel ids of the product."""
+  hiddenSalesChannelIds: [String!]
+  id: ID!
+  """Max purchasable quantity of the product for per cart."""
+  maxQuantityPerCart: Float
+  """HTML Metadata identifier of the product."""
+  metaData: HTMLMetaData
+  """Unique identifier of the product."""
+  name: String!
+  """Option set id of the product."""
+  productOptionSetId: String
+  """Variant types of the product."""
+  productVariantTypes: [ProductVariantType!]
+  """Volume discount id of the product."""
+  productVolumeDiscountId: String
+  """List of sales channel ids of the product."""
+  salesChannelIds: [String!]
+  """List of hidden sales channels of the product."""
+  salesChannels: [ProductSalesChannel!]
+  """Short description of the product."""
+  shortDescription: String
+  """List of product tag identifiers."""
+  tagIds: [String!]
+  """List of product tags."""
+  tags: [SimpleProductTag!]
+  totalStock: Float
+  """Translations for the product."""
+  translations: [ProductTranslation!]
+  """Type of the product."""
+  type: ProductTypeEnum!
+  updatedAt: Timestamp
+  """List of product variants."""
+  variants: [Variant!]!
+  """Vendor id of the product."""
+  vendorId: String
+  """Weight of the product."""
+  weight: Float
+}
+
+type ProductAttribute {
+  createdAt: Timestamp
+  deleted: Boolean!
+  """Description of the attribute"""
+  description: String
+  id: ID!
+  """Name of the attribute"""
+  name: String!
+  """Options of the attribute"""
+  options: [ProductAttributeOption!]
+  """Table template description for product attribute"""
+  tableTemplate: ProductAttributeTableTemplate
+  """Translations for the attribute"""
+  translations: [ProductAttributeTranslation!]
+  """Type of the attribute"""
+  type: ProductAttributeTypeEnum!
+  updatedAt: Timestamp
+}
+
+input ProductAttributeFilterInput {
+  eq: String
+  in: [String!]
+  nin: [String!]
+}
+
+input ProductAttributeInput {
+  createdAt: Timestamp
+  deleted: Boolean = false
+  description: String
+  id: ID
+  name: String!
+  options: [ProductAttributeOptionInput!]
+  tableTemplate: ProductAttributeTableTemplateInput
+  translations: [ProductAttributeTranslationInput!]
+  type: ProductAttributeTypeEnum!
+  updatedAt: Timestamp
+}
+
+type ProductAttributeOption {
+  """
+  It is the color code information of the product attribute option. It can be a maximum of 7 characters.
+  """
+  colorCode: String
+  createdAt: Timestamp
+  deleted: Boolean!
+  id: ID!
+  """Name of the product attribute option"""
+  name: String!
+  """It is the image information of the product attribute option."""
+  thumbnailImageId: String
+  updatedAt: Timestamp
+}
+
+input ProductAttributeOptionInput {
+  colorCode: String
+  createdAt: Timestamp
+  deleted: Boolean = false
+  id: ID
+  name: String!
+  thumbnailImageId: String
+  updatedAt: Timestamp
+}
+
+type ProductAttributeOptionTranslation {
+  id: String!
+  """Name of the attribute option for translation."""
+  name: String
+}
+
+input ProductAttributeOptionTranslationInput {
+  id: String!
+  name: String
+}
+
+type ProductAttributeTableCellData {
+  id: String!
+  """Name of the product attribute table"""
+  name: String!
+}
+
+input ProductAttributeTableCellDataInput {
+  id: String!
+  name: String!
+}
+
+type ProductAttributeTableTemplate {
+  """List of columns for product attribute table."""
+  columns: [ProductAttributeTableCellData!]!
+  """List of rows for product attribute table."""
+  rows: [ProductAttributeTableCellData!]!
+}
+
+input ProductAttributeTableTemplateInput {
+  columns: [ProductAttributeTableCellDataInput!]!
+  rows: [ProductAttributeTableCellDataInput!]!
+}
+
+type ProductAttributeTranslation {
+  """It is the description information of the translation."""
+  description: String
+  """It is the name information of the translation."""
+  locale: String!
+  """It is the information in which language the translation is saved."""
+  name: String
+  """List of translations for attribute options"""
+  options: [ProductAttributeOptionTranslation!]
+}
+
+input ProductAttributeTranslationInput {
+  description: String
+  locale: String!
+  name: String
+  options: [ProductAttributeOptionTranslationInput!]
+}
+
+"""ProductAttribute Types"""
+enum ProductAttributeTypeEnum {
+  BOOLEAN
+  CHOICE
+  COLOR_THUMBNAIL_MULTIPLE_CHOICE
+  DATE
+  DATETIME
+  HTML
+  IMAGE
+  MULTIPLE_CHOICE
+  NUMERIC
+  PRODUCT
+  TABLE
+  TEXT
+}
+
+type ProductAttributeValue {
+  """Image ids of the product attribute"""
+  imageIds: [String!]
+  """Identifier of the product attribute"""
+  productAttributeId: String
+  """Option identifier for the product attribute"""
+  productAttributeOptionId: String
+  """Value of the product attribute"""
+  value: String
+}
+
+input ProductAttributeValueInput {
+  imageIds: [String!]
+  productAttributeId: String
+  productAttributeOptionId: String
+  value: String
+}
+
+type ProductBaseUnitModel {
+  """Amount of the product unit."""
+  baseAmount: Float
+  """Type of the product unit."""
+  type: ProductUnitTypeEnum!
+  """Unit id of the product unit."""
+  unitId: String
+}
+
+input ProductBaseUnitModelInput {
+  baseAmount: Float!
+  type: ProductUnitTypeEnum!
+  unitId: String
+}
+
+type ProductBrand {
+  createdAt: Timestamp
+  deleted: Boolean!
+  """The description of the product's brand."""
+  description: String
+  id: ID!
+  """The image information of the product's brand."""
+  imageId: String
+  """It is the metadata information of the product brand."""
+  metaData: HTMLMetaData
+  """The name of the product's brand."""
+  name: String!
+  orderType: CategoryProductsOrderTypeEnum
+  """It is the information of which sales channel the product brand is in."""
+  salesChannelIds: [String!]
+  """It is the translation information of the product brand."""
+  translations: [ProductBrandTranslation!]
+  updatedAt: Timestamp
+}
+
+input ProductBrandInput {
+  createdAt: Timestamp
+  deleted: Boolean = false
+  """The description of the product's brand."""
+  description: String
+  id: ID
+  """The image information of the product's brand."""
+  imageId: String
+  """It is the metadata information of the product brand."""
+  metaData: HTMLMetaDataInput
+  """The name of the product's brand."""
+  name: String!
+  orderType: CategoryProductsOrderTypeEnum
+  """It is the information of which sales channel the product brand is in."""
+  salesChannelIds: [String!]
+  """It is the translation information of the product brand."""
+  translations: [ProductBrandTranslationInput!]
+  updatedAt: Timestamp
+}
+
+type ProductBrandTranslation {
+  """It is the description information of the translation."""
+  description: String
+  """It is the name information of the translation."""
+  locale: String!
+  """It is the information in which language the translation is saved."""
+  name: String
+}
+
+input ProductBrandTranslationInput {
+  """It is the description information of the translation."""
+  description: String
+  """It is the name information of the translation."""
+  locale: String!
+  """It is the information in which language the translation is saved."""
+  name: String
+}
+
+type ProductImage {
+  fileName: String
+  """Id of the product image."""
+  imageId: String
+  """Whether the image is main image for the product or not."""
+  isMain: Boolean!
+  """True if this the media type is video"""
+  isVideo: Boolean
+  """Order of the product image."""
+  order: Float!
+}
+
+input ProductImageInput {
+  fileName: String
+  imageId: String!
+  isMain: Boolean!
+  isVideo: Boolean
+  order: Float!
+}
+
+input ProductInput {
+  attributes: [ProductAttributeValueInput!]
+  baseUnit: ProductBaseUnitModelInput
+  brandId: String
+  categoryIds: [String!]
+  createdAt: Timestamp
+  deleted: Boolean = false
+  description: String
+  dynamicPriceListIds: [String!]
+  googleTaxonomyId: String
+  groupVariantsByVariantTypeId: String
+  hiddenSalesChannelIds: [String!]
+  id: ID
+  """Max purchasable quantity of the product for per cart."""
+  maxQuantityPerCart: Float
+  metaData: HTMLMetaDataInput
+  name: String!
+  productOptionSetId: String
+  productVariantTypes: [ProductVariantTypeInput!]
+  productVolumeDiscountId: String
+  salesChannelIds: [String!]
+  """List of sales channels of the product."""
+  salesChannels: [ProductSalesChannelInput!]
+  shortDescription: String
+  tagIds: [String!]
+  translations: [ProductTranslationInput!]
+  type: ProductTypeEnum!
+  updatedAt: Timestamp
+  variants: [VariantInput!]!
+  vendorId: String
+  weight: Float
+}
+
+type ProductOption {
+  createdAt: Timestamp
+  dateSettings: ProductOptionDateSettings
+  deleted: Boolean!
+  fileSettings: ProductOptionFileSettings
+  id: ID!
+  isOptional: Boolean
+  name: String!
+  optionalText: String
+  order: Float!
+  otherPrices: [ProductOptionSelectValueOtherPrice!]
+  price: Float
+  priceType: ProductOptionPriceTypeEnum
+  requiredOptionId: String
+  requiredOptionValueIds: [String!]
+  selectSettings: ProductOptionSelectSettings
+  textSettings: ProductOptionTextSettings
+  type: ProductOptionTypeEnum!
+  updatedAt: Timestamp
+}
+
+type ProductOptionDateSettings {
+  max: Timestamp
+  maxRelativeNextDate: Float
+  min: Timestamp
+  minRelativeNextDate: Float
+}
+
+type ProductOptionFileSettings {
+  allowedExtensions: [String!]
+  maxQuantity: Float
+  minQuantity: Float
+}
+
+enum ProductOptionPriceTypeEnum {
+  AMOUNT
+  RATIO
+}
+
+type ProductOptionSelectSettings {
+  maxSelect: Float
+  minSelect: Float
+  type: ProductOptionSelectTypeEnum!
+  values: [ProductOptionSelectValue!]!
+}
+
+enum ProductOptionSelectTypeEnum {
+  BOX
+  SELECT
+  SWATCH
+}
+
+type ProductOptionSelectValue {
+  colorCode: String
+  createdAt: Timestamp
+  deleted: Boolean!
+  id: ID!
+  order: Float!
+  otherPrices: [ProductOptionSelectValueOtherPrice!]
+  price: Float
+  priceType: ProductOptionPriceTypeEnum
+  thumbnailImageId: String
+  updatedAt: Timestamp
+  value: String!
+}
+
+type ProductOptionSelectValueOtherPrice {
+  currencyCode: String!
+  currencySymbol: String
+  price: Float!
+  priceListId: String
+  priceType: ProductOptionPriceTypeEnum
+}
+
+type ProductOptionSelectValueTranslations {
+  id: String!
+  value: String
+}
+
+type ProductOptionSet {
+  createdAt: Timestamp
+  deleted: Boolean!
+  id: ID!
+  name: String!
+  options: [ProductOption!]!
+  translations: [ProductOptionSetTranslations!]
+  updatedAt: Timestamp
+}
+
+type ProductOptionSetTranslations {
+  locale: String!
+  options: [ProductOptionTranslations!]
+}
+
+type ProductOptionTextSettings {
+  max: Float
+  min: Float
+}
+
+type ProductOptionTranslations {
+  id: String!
+  name: String
+  optionalText: String
+  values: [ProductOptionSelectValueTranslations!]
+}
+
+enum ProductOptionTypeEnum {
+  CHECKBOX
+  CHOICE
+  COLOR_PICKER
+  DATE_PICKER
+  FILE
+  IMAGE
+  TEXT
+  TEXT_AREA
+}
+
+type ProductOrder {
+  brandIds: [String!]
+  categoryIds: [String!]
+  createdAt: Timestamp
+  deleted: Boolean!
+  id: ID!
+  products: [ProductOrderProduct!]!
+  updatedAt: Timestamp
+}
+
+input ProductOrderInput {
+  brandIds: [String!]
+  categoryIds: [String!]
+  createdAt: Timestamp
+  deleted: Boolean = false
+  id: ID
+  products: [ProductOrderProductInput!]!
+  updatedAt: Timestamp
+}
+
+type ProductOrderProduct {
+  order: Int!
+  productId: String!
+}
+
+input ProductOrderProductInput {
+  order: Int!
+  productId: String!
+}
+
+type ProductPaginationResponse {
+  """
+  Returns the first three records of each page in the records returned as a response.
+  For example, **let's say page = 3, limit = 30, count = 3.**
+  The records that will return as a response are the records **between 60-62.**
+  """
+  count: Int!
+  data: [Product!]!
+  """
+  In the records returned as Response, it shows whether there are any more records or not. For example, let's say our page field is three and our limit field is thirty. Records between 60 and 90 will be returned. If hasNext is `true` despite these records, **it means there are more records.** If hasNext is `false`, it means there are a total of **90 records.**
+  """
+  hasNext: Boolean!
+  """
+  The maximum number of data you want to see on a page in the records returned as a response.
+  For example, if the limit is **20**, the data will be displayed ** as 20 each. **
+  :::note
+  min 1, max 200 values can be given. If no value is entered, default 50 is accepted.
+  :::
+  """
+  limit: Int!
+  """
+  The number of the page you want to see in the records that return as response.
+  For example: We entered the page field as **3**.And let our limit field be **30**.
+  The records that will return as a response are the records **between 60-90.**
+  :::note
+  If no value is entered, default 1 is accepted.
+  :::
+  """
+  page: Int!
+}
+
+type ProductPrice {
+  """Buy price of product."""
+  buyPrice: Float
+  """Currency for the price of product."""
+  currency: String
+  currencyCode: String
+  currencySymbol: String
+  """Discount price of product."""
+  discountPrice: Float
+  """Id of the price list that the product belongs to."""
+  priceListId: String
+  """Sell price of product."""
+  sellPrice: Float!
+}
+
+input ProductPriceInput {
+  buyPrice: Float
+  currency: String
+  discountPrice: Float
+  priceListId: String
+  sellPrice: Float!
+}
+
+type ProductSalesChannel {
+  id: String!
+  """Max purchasable quantity of the product for per cart."""
+  maxQuantityPerCart: Float
+  """Min purchasable quantity of the product for per cart."""
+  minQuantityPerCart: Float
+  """Volume discount id of the product."""
+  productVolumeDiscountId: String
+  quantitySettings: [Float!]
+  status: SalesChannelStatusEnum!
+}
+
+input ProductSalesChannelInput {
+  id: String!
+  """Max purchasable quantity of the product for per cart."""
+  maxQuantityPerCart: Float
+  """Min purchasable quantity of the product for per cart."""
+  minQuantityPerCart: Float
+  productVolumeDiscountId: String
+  quantitySettings: [Float!]
+  status: SalesChannelStatusEnum!
+}
+
+type ProductSearchCustomerReviewSummaries {
+  averageRating: Float
+  reviewCount: Float
+  stars: [SearchProductCustomerReviewStar!]
+  storefrontId: String
+}
+
+type ProductSearchResponse {
+  """Number of search results listed in current page."""
+  count: Float!
+  """Search result"""
+  data: JSON!
+  """Maximum number of results returned in each page."""
+  limit: Float!
+  """Current page number of the search results."""
+  page: Float!
+  """Search result"""
+  results: [SearchProduct!]!
+  """Total number of search results."""
+  totalCount: Float!
+}
+
+type ProductStockLocation {
+  createdAt: Timestamp
+  deleted: Boolean!
+  id: ID!
+  productId: String!
+  stockCount: Float!
+  stockLocationId: String!
+  updatedAt: Timestamp
+  variantId: String!
+}
+
+input ProductStockLocationInput {
+  createdAt: Timestamp
+  deleted: Boolean = false
+  id: ID
+  """It is the product id to which the variant associated."""
+  productId: String!
+  """It is the stock quantity of the variant."""
+  stockCount: Float!
+  """
+  It is the stock location id information where the stock information will be edited.
+  """
+  stockLocationId: String!
+  updatedAt: Timestamp
+  """It is the of the variant."""
+  variantId: String!
+}
+
+type ProductStockLocationPaginationResponse {
+  """
+  Returns the first three records of each page in the records returned as a response.
+  For example, **let's say page = 3, limit = 30, count = 3.**
+  The records that will return as a response are the records **between 60-62.**
+  """
+  count: Int!
+  data: [ProductStockLocation!]!
+  """
+  In the records returned as Response, it shows whether there are any more records or not. For example, let's say our page field is three and our limit field is thirty. Records between 60 and 90 will be returned. If hasNext is `true` despite these records, **it means there are more records.** If hasNext is `false`, it means there are a total of **90 records.**
+  """
+  hasNext: Boolean!
+  """
+  The maximum number of data you want to see on a page in the records returned as a response.
+  For example, if the limit is **20**, the data will be displayed ** as 20 each. **
+  :::note
+  min 1, max 200 values can be given. If no value is entered, default 50 is accepted.
+  :::
+  """
+  limit: Int!
+  """
+  The number of the page you want to see in the records that return as response.
+  For example: We entered the page field as **3**.And let our limit field be **30**.
+  The records that will return as a response are the records **between 60-90.**
+  :::note
+  If no value is entered, default 1 is accepted.
+  :::
+  """
+  page: Int!
+}
+
+type ProductTag {
+  createdAt: Timestamp
+  deleted: Boolean!
+  id: ID!
+  """The name of the product's tag."""
+  name: String!
+  """The name of the product's tag."""
+  translations: [ProductTagTranslation!]
+  updatedAt: Timestamp
+}
+
+input ProductTagInput {
+  createdAt: Timestamp
+  deleted: Boolean = false
+  id: ID
+  """The name of the product's tag."""
+  name: String!
+  """The name of the product's tag."""
+  translations: [ProductTagTranslationInput!]
+  updatedAt: Timestamp
+}
+
+type ProductTagTranslation {
+  """It is the description information of the translation."""
+  description: String
+  """It is the name information of the translation."""
+  locale: String!
+  """It is the information in which language the translation is saved."""
+  name: String
+}
+
+input ProductTagTranslationInput {
+  """It is the description information of the translation."""
+  description: String
+  """It is the name information of the translation."""
+  locale: String!
+  """It is the information in which language the translation is saved."""
+  name: String
+}
+
+type ProductTranslation {
+  """It is the description information of the translation."""
+  description: String
+  """It is the name information of the translation."""
+  locale: String!
+  """It is the information in which language the translation is saved."""
+  name: String
+}
+
+input ProductTranslationInput {
+  description: String
+  locale: String!
+  name: String
+}
+
+"""Product Types"""
+enum ProductTypeEnum {
+  BUNDLE
+  DIGITAL
+  MEMBERSHIP
+  PHYSICAL
+}
+
+type ProductUnit {
+  createdAt: Timestamp
+  deleted: Boolean!
+  id: ID!
+  """The name of the product's unit."""
+  name: String!
+  """The name of the product's unit."""
+  translations: [ProductUnitTranslation!]
+  updatedAt: Timestamp
+}
+
+input ProductUnitInput {
+  createdAt: Timestamp
+  deleted: Boolean = false
+  id: ID
+  """The name of the product's unit."""
+  name: String!
+  """The name of the product's unit."""
+  translations: [ProductUnitTranslationInput!]
+  updatedAt: Timestamp
+}
+
+type ProductUnitTranslation {
+  """It is the description information of the translation."""
+  description: String
+  """It is the name information of the translation."""
+  locale: String!
+  """It is the information in which language the translation is saved."""
+  name: String
+}
+
+input ProductUnitTranslationInput {
+  """It is the description information of the translation."""
+  description: String
+  """It is the name information of the translation."""
+  locale: String!
+  """It is the information in which language the translation is saved."""
+  name: String
+}
+
+enum ProductUnitTypeEnum {
+  CENTILITER
+  CENTIMETER
+  CUBIC_METERS
+  CUSTOM
+  GRAM
+  KILOGRAM
+  LITER
+  METER
+  MILLIGRAM
+  MILLILITER
+  MILLIMETER
+  SQUARE_METERS
+}
+
+type ProductVariantType {
+  """Order of the variant type."""
+  order: Float!
+  """Id of variant type."""
+  variantTypeId: String!
+  """List of variant value identifiers."""
+  variantValueIds: [String!]
+}
+
+input ProductVariantTypeInput {
+  order: Float!
+  variantTypeId: String!
+  variantValueIds: [String!]!
+}
+
+type ProductVolumeDiscount {
+  createdAt: Timestamp
+  deleted: Boolean!
+  id: ID!
+  """The name of the product volume discount."""
+  name: String!
+  """Shows the product volume discount rules."""
+  rules: [ProductVolumeDiscountRule!]!
+  """Determines whether variants will be evaluated separately."""
+  scope: ProductVolumeDiscountScopeEnum!
+  updatedAt: Timestamp
+}
+
+input ProductVolumeDiscountInput {
+  createdAt: Timestamp
+  deleted: Boolean = false
+  id: ID
+  """The name of the product volume discount."""
+  name: String!
+  """Shows the product volume discount rules."""
+  rules: [ProductVolumeDiscountRuleInput!]!
+  """Determines whether variants will be evaluated separately."""
+  scope: ProductVolumeDiscountScopeEnum!
+  updatedAt: Timestamp
+}
+
+type ProductVolumeDiscountRule {
+  """Shows the discount amount of the rule."""
+  discountRatio: Float!
+  """
+  It shows the quantity of the product that will be included in the rule.
+  """
+  lineItemQuantityRange: VolumeDiscountMinMaxRangeField!
+}
+
+input ProductVolumeDiscountRuleInput {
+  """Shows the discount amount of the rule."""
+  discountRatio: Float!
+  """
+  It shows the quantity of the product that will be included in the rule.
+  """
+  lineItemQuantityRange: VolumeDiscountMinMaxRangeFieldInput!
+}
+
+"""Product Volume Discount Scope Enum"""
+enum ProductVolumeDiscountScopeEnum {
+  PRODUCT
+  VARIANT
+}
+
+type PublicTransaction {
+  amount: Float!
+  authCode: String!
+  checkoutId: String
+  createdAt: Timestamp
+  currencyCode: String!
+  currencySymbol: String
+  customerId: String
+  deleted: Boolean!
+  error: TransactionError
+  gatewayReferenceId: String
+  id: ID!
+  orderId: String
+  paymentGatewayCode: String
+  paymentGatewayId: String!
+  paymentGatewayName: String!
+  paymentMethod: PaymentMethodTypeEnum
+  paymentMethodDetail: TransactionPaymentMethodDetail
+  processedAt: Timestamp
+  refundReason: String
+  status: TransactionStatusEnum!
+  type: TransactionTypeEnum!
+  updatedAt: Timestamp
+}
+
+type Query {
+  """
+  By using this api you can get properties of merchant and merchant staff.
+  """
+  getAuthorizedApp: AuthorizedApp
+  """Use this mutation to get global settings."""
+  getGlobalTaxSettings: GlobalTaxSettings
+  """Upload url for the specified image."""
+  getImageUploadUrl(
+    """Directory path of the specified image."""
+    imageDir: String
+    """Unique identifier of the image."""
+    imageId: String!
+  ): String!
+  getImportJobData(importJobId: String!, importType: ImportTypeEnum!): GetImportJobDataResponse!
+  getImportJobDataList: GetLastImportJobDataResponseData!
+  getLastImportJobData: GetLastImportJobDataResponse!
+  """
+  By using this api you can get properties of merchant and merchant staff.
+  """
+  getMerchant: MerchantResponse!
+  """Using this api you can view all licenses owned by merchant."""
+  getMerchantLicence: MerchantLicence!
+  """Using this api, you can view your sales channel."""
+  getSalesChannel: SalesChannel
+  getTimelineEntry: String!
+  getVideoUploadUrl(
+    """Unique identifier of the video."""
+    videoId: String!
+  ): GetVideoUploadURLResponse!
+  """Use this query to get abandoned checkouts."""
+  listAbandonedCheckouts(id: StringFilterInput, input: ListAbandonedCartInput!, lastActivityDate: DateFilterInput, mailSendDate: DateFilterInput, pagination: PaginationInput, sort: String): CartPaginationResponse!
+  listBranch(id: StringFilterInput, includeDeleted: Boolean, name: StringFilterInput, salesChannelId: StringFilterInput, updatedAt: DateFilterInput): [Branch!]!
+  listCampaign(canCombineWithOtherCampaigns: BooleanFilterInput, id: StringFilterInput, includeDeleted: Boolean, pagination: PaginationInput, search: String, sort: String, type: CampaignTypeEnumFilterInput, updatedAt: DateFilterInput): CampaignPaginationResponse!
+  listCargoCompany(id: StringFilterInput, includeDeleted: Boolean): [CargoCompany!]!
+  """
+  Using this api, you can view the categories of products.
+  Search applies to following fields: `name`
+  """
+  listCategory(
+    """You can filter according to the category path of the product."""
+    categoryPath: CategoryPathFilterInput
+    id: StringFilterInput
+    """You can filter according to the name of the category."""
+    name: StringFilterInput
+    """
+    Some listing APIs have searchable fields. You can search in these fields as you wish. For example, in an API; Let the `searchableFields :['name', 'description']`. If we send `search: AAA` as input in args, it will return records with 'AAA' in both the name and description fields.
+    """
+    search: String
+    updatedAt: DateFilterInput
+  ): [Category!]!
+  listCity(
+    """
+    You can get the filter response by entering the desired condition for the countryId.
+    """
+    countryId: StringFilterInput
+    id: StringFilterInput
+    search: String
+    """
+    You can get the filter response by entering the desired condition for the stateId.
+    """
+    stateId: StringFilterInput!
+    updatedAt: DateFilterInput
+  ): [City!]!
+  listCountry(
+    id: StringFilterInput
+    """
+    You can get the filter response by entering the desired condition for the iso2.
+    """
+    iso2: StringFilterInput
+    """
+    You can get the filter response by entering the desired condition for the iso3.
+    """
+    iso3: StringFilterInput
+    search: String
+    updatedAt: DateFilterInput
+  ): [Country!]!
+  listCoupon(campaignId: StringFilterInput, id: StringFilterInput, includeDeleted: Boolean, pagination: PaginationInput, search: String): CouponPaginationResponse!
+  listCustomer(
+    """
+    You can get the filter response by entering the desired condition for the email. 
+    :::note
+    For example email: { eq: aa@gmail.com}
+    :::
+    """
+    email: StringFilterInput
+    id: StringFilterInput
+    merchantId: StringFilterInput
+    """
+    With the pagination feature in the data returned as a response, you can filter the data and display the part you want.
+    """
+    pagination: PaginationInput
+    """
+    You can get the filter response by entering the desired condition for the email. 
+    :::note
+    For example phone: { eq: 5123456789999}
+    :::
+    """
+    phone: StringFilterInput
+    """
+    Some listing APIs have searchable fields. You can search in these fields as you wish. For example, in an API; Let the `searchableFields :['name', 'description']`. If we send `search: AAA` as input in args, it will return records with 'AAA' in both the name and description fields.
+    """
+    search: String
+    """
+    Some listing APIs have sortable fields. Using these fields, the data returned as response has been sorted. For example, in an API; Let it be `sortableFields: ['updatedAt']`. The data returned as a response will be sorted according to **updatedAt.**
+    """
+    sort: String
+    updatedAt: DateFilterInput
+  ): CustomerPaginationResponse!
+  listCustomerAttribute(includeDeleted: Boolean): [CustomerAttribute!]!
+  listDistrict(
+    """
+    You can get the filter response by entering the desired condition for the cityId.
+    """
+    cityId: StringFilterInput!
+    """
+    You can get the filter response by entering the desired condition for the countryId.
+    """
+    countryId: StringFilterInput
+    id: StringFilterInput
+    search: String
+    """
+    You can get the filter response by entering the desired condition for the stateId.
+    """
+    stateId: StringFilterInput
+    updatedAt: DateFilterInput
+  ): [District!]!
+  listGlobalTaxSettings(id: StringFilterInput, includeDeleted: Boolean, storefrontId: StringFilterInput): [GlobalTaxSettings!]!
+  listLanguage(id: StringFilterInput): [Language!]!
+  """
+  Using this api, you can view the payment features that a merchant has created for the app.
+  """
+  listMerchantAppPayment(
+    id: StringFilterInput
+    """
+    With the pagination feature in the data returned as a response, you can filter the data and display the part you want.
+    """
+    pagination: PaginationInput
+  ): MerchantAppPaymentPaginationResponse!
+  listMerchantSettings(id: StringFilterInput, merchantId: StringFilterInput): [MerchantSettings!]!
+  listOrder(
+    branchId: StringFilterInput
+    branchSessionId: StringFilterInput
+    closedAt: DateFilterInput
+    customerEmail: StringFilterInput
+    customerId: StringFilterInput
+    id: StringFilterInput
+    invoicesStoreAppId: StringFilterInput
+    orderNumber: StringFilterInput
+    orderPackageStatus: OrderPackageStatusEnumInputFilter
+    orderPaymentStatus: OrderPaymentStatusEnumInputFilter
+    orderTagIds: StringFilterInput
+    orderedAt: DateFilterInput
+    """
+    With the pagination feature in the data returned as a response, you can filter the data and display the part you want.
+    """
+    pagination: PaginationInput
+    paymentMethodType: OrderPaymentMethodEnumFilterInput
+    salesChannelId: StringFilterInput
+    """
+    Some listing APIs have searchable fields. You can search in these fields as you wish. For example, in an API; Let the `searchableFields :['name', 'description']`. If we send `search: AAA` as input in args, it will return records with 'AAA' in both the name and description fields.
+    """
+    search: String
+    shippingMethod: OrderShippingMethodEnumFilterInput
+    """
+    Some listing APIs have sortable fields. Using these fields, the data returned as response has been sorted. For example, in an API; Let it be `sortableFields: ['updatedAt']`. The data returned as a response will be sorted according to **updatedAt.**
+    """
+    sort: String
+    status: OrderStatusEnumInputFilter
+    stockLocationId: StringFilterInput
+    terminalId: StringFilterInput
+    updatedAt: DateFilterInput
+  ): OrderPaginationResponse!
+  listOrderTag(id: StringFilterInput, includeDeleted: Boolean, name: StringFilterInput, search: String, updatedAt: DateFilterInput): [OrderTag!]!
+  listOrderTransactions(orderId: String!): [PublicTransaction!]!
+  listPaymentGateway(cartId: String, id: StringFilterInput, includeDeleted: Boolean, locale: String, pagination: PaginationInput, transactionAmount: Float): [PaymentGateway!]!
+  listPriceList(id: StringFilterInput): [PriceList!]!
+  """
+  Use this query to list products.
+  Search applies to following fields: `name` `variants.sku` `variants.barcodeList`
+  
+  Sort applies to following fields: `createdAt` `updatedAt` `name`
+  """
+  listProduct(
+    attributeId: ProductAttributeFilterInput
+    """List of barcode for the product."""
+    barcodeList: StringFilterInput
+    brandId: StringFilterInput
+    bundleProductsProductId: StringFilterInput
+    categoryIds: CategoryFilterInput
+    id: StringFilterInput
+    includeDeleted: Boolean
+    name: StringFilterInput
+    """
+    With the pagination feature in the data returned as a response, you can filter the data and display the part you want.
+    """
+    pagination: PaginationInput
+    salesChannelIds: StringFilterInput
+    """SKU of the product."""
+    sku: StringFilterInput
+    sort: String
+    tagIds: StringFilterInput
+    variantStockLocationId: StringFilterInput
+    variantTypeId: StringFilterInput
+    vendorId: StringFilterInput
+  ): ProductPaginationResponse!
+  """Use this query to list product attributes."""
+  listProductAttribute(id: StringFilterInput, name: StringFilterInput, updatedAt: DateFilterInput): [ProductAttribute!]!
+  """
+  Using this api, you can view the brands of products.
+  Search applies to following fields: `name`
+  """
+  listProductBrand(
+    id: StringFilterInput
+    """You can filter by product brand name."""
+    name: StringFilterInput
+    """
+    Some listing APIs have searchable fields. You can search in these fields as you wish. For example, in an API; Let the `searchableFields :['name', 'description']`. If we send `search: AAA` as input in args, it will return records with 'AAA' in both the name and description fields.
+    """
+    search: String
+    updatedAt: DateFilterInput
+  ): [ProductBrand!]!
+  listProductOptionSet(
+    id: StringFilterInput
+    """You can filter by product option set name."""
+    name: StringFilterInput
+    """
+    Some listing APIs have searchable fields. You can search in these fields as you wish. For example, in an API; Let the `searchableFields :['name', 'description']`. If we send `search: AAA` as input in args, it will return records with 'AAA' in both the name and description fields.
+    """
+    search: String
+    updatedAt: DateFilterInput
+  ): [ProductOptionSet!]!
+  listProductOrder(brandIds: StringFilterInput, categoryIds: StringFilterInput, id: StringFilterInput, includeDeleted: Boolean, updatedAt: DateFilterInput): [ProductOrder!]!
+  listProductStockLocation(id: StringFilterInput, pagination: PaginationInput, productId: StringFilterInput, sort: String, stockLocationId: StringFilterInput, updatedAt: DateFilterInput, variantId: StringFilterInput): ProductStockLocationPaginationResponse!
+  """Using this api, you can view the tags of products."""
+  listProductTag(
+    id: StringFilterInput
+    """You can filter by product tag name."""
+    name: StringFilterInput
+    updatedAt: DateFilterInput
+  ): [ProductTag!]!
+  """Using this api, you can view the units of products."""
+  listProductUnit(id: StringFilterInput): [ProductUnit!]!
+  """Using this api, you can view the product volume discounts."""
+  listProductVolumeDiscount(id: StringFilterInput): [ProductVolumeDiscount!]!
+  listSalesChannel(id: StringFilterInput): [SalesChannel!]!
+  listShippingSettings: [ShippingSettings!]!
+  listState(
+    """
+    You can get the filter response by entering the desired condition for the countryId.
+    """
+    countryId: StringFilterInput!
+    id: StringFilterInput
+    search: String
+    updatedAt: DateFilterInput
+  ): [State!]!
+  listStockLocation(id: StringFilterInput, name: StringFilterInput, updatedAt: DateFilterInput): [StockLocation!]!
+  listStorefront(id: StringFilterInput, salesChannelId: StringFilterInput): [Storefront!]!
+  """
+  Use this query to list storefront javascript scripts by supplying the `storefrontId` input.
+  """
+  listStorefrontJSScript(storefrontId: String): [StorefrontJSScript!]!
+  """
+  Use this query to list storefront policies by supplying the `StorefrontPolicyArgs` input.
+  Search applies to following fields: `name` `slug`
+  """
+  listStorefrontPolicy(id: StringFilterInput, includeDeleted: Boolean, language: StringFilterInput, name: StringFilterInput, updatedAt: DateFilterInput): [StorefrontPolicy!]!
+  listTaxSettings(countryId: StringFilterInput, id: StringFilterInput, includeDeleted: Boolean): [TaxSettings!]!
+  listTerminal(branchId: StringFilterInput, id: StringFilterInput, includeDeleted: Boolean, updatedAt: DateFilterInput): [Terminal!]!
+  listTown(
+    """
+    You can get the filter response by entering the desired condition for the districtId.
+    """
+    districtId: StringFilterInput!
+    id: StringFilterInput
+    search: String
+    updatedAt: DateFilterInput
+  ): [Town!]!
+  """Using this api, you can view the variant types of products."""
+  listVariantType(
+    id: StringFilterInput
+    """You can filter by product variant type name."""
+    name: StringFilterInput
+    updatedAt: DateFilterInput
+  ): [VariantType!]!
+  """Use this query to list the vendor."""
+  listVendor(id: StringFilterInput, includeDeleted: Boolean, merchantId: StringFilterInput, name: StringFilterInput, updatedAt: DateFilterInput): [Vendor!]!
+  """Use this query to list active webhooks of your application."""
+  listWebhook: [Webhook!]!
+  me: MeResponse
+  """Result(s) containing searched products."""
+  searchProducts(
+    """Input data for product search"""
+    input: SearchInput!
+  ): ProductSearchResponse!
+}
+
+enum SFAnalyticsTrafficSourceEnum {
+  ADS_OTHER
+  AFFILIATE
+  BING_ADS
+  DIRECT
+  DISPLAY
+  EMAIL
+  FACEBOOK_ADS
+  GOOGLE_ADS
+  INSTAGRAM_ADS
+  ORGANIC_SEARCH
+  OTHER
+  PAID_TRAFFIC
+  REFERRAL
+  SOCIAL
+}
+
+type SalesChannel {
+  createdAt: Timestamp
+  deleted: Boolean!
+  id: ID!
+  """The sales channel name field."""
+  name: String!
+  """The sales channel payment gateway field."""
+  paymentGateways: [SalesChannelPaymentGateway!]
+  """The sales channel priceList field."""
+  priceListId: String
+  """The sales channel stock locations field."""
+  stockLocations: [SalesChannelStockLocation!]
+  type: SalesChannelTypeEnum!
+  updatedAt: Timestamp
+}
+
+input SalesChannelInput {
+  """The sales channel name field."""
+  name: String
+  """The sales channel priceList field."""
+  priceListId: String
+  """The sales channel stock locations field."""
+  stockLocations: [SalesChannelStockLocationInput!]!
+}
+
+type SalesChannelPaymentGateway {
+  id: String!
+  """The field where the Sales Channel Stock Position order is kept."""
+  order: Float!
+}
+
+enum SalesChannelStatusEnum {
+  HIDDEN
+  PASSIVE
+  VISIBLE
+}
+
+type SalesChannelStockLocation {
+  id: String!
+  """The field where the Sales Channel Stock Position order is kept."""
+  order: Float!
+}
+
+input SalesChannelStockLocationInput {
+  id: String!
+  """The field where the Sales Channel Stock Position order is kept."""
+  order: Float!
+}
+
+"""Sales Channel Type"""
+enum SalesChannelTypeEnum {
+  ADMIN
+  APP
+  B2B_STOREFRONT
+  FACEBOOK
+  GOOGLE
+  POS
+  STOREFRONT
+  STOREFRONT_APP
+}
+
+input SaveStockLocationsInput {
+  productStockLocationInputs: [ProductStockLocationInput!]
+}
+
+input SaveVariantPricesInput {
+  priceListId: String
+  """List of variants to be updated. Maximum 3000 entries allowed."""
+  variantPriceInputs: [VariantPriceInput!]!
+}
+
+type SearchCategory {
+  id: String!
+  name: String!
+  path: [SearchCategoryPath!]!
+  slug: String
+  translations: [SearchCategoryTranslation!]
+}
+
+type SearchCategoryPath {
+  id: String!
+  name: String!
+  slug: String
+  translations: [SearchCategoryTranslation!]
+}
+
+type SearchCategoryTranslation {
+  """It is the description information of the translation."""
+  description: String
+  """It is the name information of the translation."""
+  locale: String!
+  """It is the information in which language the translation is saved."""
+  name: String
+  slug: String
+}
+
+type SearchHTMLMetaData {
+  canonicals: [String!]
+  description: String
+  disableIndex: Boolean
+  metadataOverrides: [SearchHTMLMetaDataOverride!]
+  pageTitle: String
+  redirectTo: String
+  slug: String!
+  translations: [HTMLMetaDataTranslation!]
+}
+
+type SearchHTMLMetaDataOverride {
+  description: String!
+  language: String
+  pageTitle: String!
+  storefrontId: String
+  storefrontRegionId: String
+}
+
+input SearchInput {
+  """List of barcodes to search."""
+  barcodeList: [String!]
+  """Pagination input"""
+  pagination: PaginationInput
+  """List of product ids to search."""
+  productIdList: [String!]
+  """Query string to search products."""
+  query: String
+  """List of SKUs to search."""
+  skuList: [String!]
+}
+
+type SearchProduct {
+  attributes: [SearchProductAttributeValue!]
+  averageRating: Float
+  baseUnit: SearchProductProductBaseUnit
+  brand: SearchProductBrand
+  campaignOffers: [SearchProductCampaignOffer!]
+  campaigns: [SearchProductCampaign!]
+  categories: [SearchCategory!]
+  createdAt: Timestamp
+  customerReviewSummaries: ProductSearchCustomerReviewSummaries
+  deleted: Boolean
+  description: String
+  dynamicPriceListIds: [String!]
+  groupVariantsByVariantTypeId: String
+  hiddenSalesChannelIds: [String!]
+  id: String!
+  metaData: SearchHTMLMetaData
+  name: String!
+  productGroup: SearchProductGroup
+  productOptionSetId: String
+  productVariantTypes: [SearchProductVariantType!]!
+  productVolumeDiscountId: String
+  reviewCount: Float
+  salesChannelIds: [String!]
+  salesChannels: [SearchProductSalesChannel!]
+  shortDescription: String
+  stars: [SearchProductCustomerReviewStar!]
+  tags: [SearchProductTag!]
+  translations: [ProductTranslation!]
+  type: String!
+  updatedAt: Timestamp
+  variants: [SearchVariant!]!
+  weight: Float
+}
+
+type SearchProductAttribute {
+  id: String!
+  name: String!
+  tableTemplate: SearchProductAttributeTableTemplate
+  translations: [ProductAttributeTranslation!]
+  type: String!
+}
+
+type SearchProductAttributeOption {
+  id: String!
+  name: String!
+}
+
+type SearchProductAttributeTableCellData {
+  id: String!
+  name: String!
+}
+
+type SearchProductAttributeTableTemplate {
+  columns: [SearchProductAttributeTableCellData!]!
+  rows: [SearchProductAttributeTableCellData!]!
+}
+
+type SearchProductAttributeValue {
+  imageIds: [String!]
+  productAttribute: SearchProductAttribute
+  productAttributeOption: SearchProductAttributeOption
+  value: String
+}
+
+type SearchProductBrand {
+  id: String!
+  imageId: String
+  name: String!
+  slug: String
+  translations: [SearchProductBrandTranslation!]
+}
+
+type SearchProductBrandTranslation {
+  """It is the description information of the translation."""
+  description: String
+  """It is the name information of the translation."""
+  locale: String!
+  """It is the information in which language the translation is saved."""
+  name: String
+  slug: String
+}
+
+type SearchProductCampaign {
+  applicablePrice: CampaignApplicablePriceEnum
+  applyCampaignToProductPrice: Boolean
+  buyXThenGetY: SearchProductCampaignBuyXThenGetY
+  currencyCodes: [String!]
+  dateRange: SearchProductCampaignDateRangeField
+  fixedDiscount: SearchProductCampaignFixedDiscount
+  id: String
+  includeDiscountedProducts: Boolean
+  salesChannelIds: [String!]
+  tieredDiscount: SearchProductCampaignTieredDiscount
+  title: String!
+  type: CampaignTypeEnum!
+}
+
+type SearchProductCampaignBuyX {
+  amount: Float!
+  applyByQuantity: Boolean!
+  filter: SearchProductCampaignFilter
+}
+
+type SearchProductCampaignBuyXThenGetY {
+  buyX: SearchProductCampaignBuyX!
+  getY: SearchProductCampaignGetY!
+  maxUsagePerOrder: Float
+}
+
+type SearchProductCampaignDateRangeField {
+  end: Timestamp
+  start: Timestamp
+}
+
+type SearchProductCampaignFilter {
+  idList: [String!]!
+  type: CampaignFilterTypeEnum!
+}
+
+type SearchProductCampaignFixedDiscount {
+  amount: Float
+  filters: [SearchProductCampaignFilter!]
+  lineItemQuantityRange: SearchProductCampaignMinMaxRangeField
+  priceRange: SearchProductCampaignMinMaxRangeField
+  shouldMatchAllConditions: Boolean
+}
+
+type SearchProductCampaignGetY {
+  amount: Float!
+  automaticallyAddItemToCart: Boolean
+  discountRatio: Float!
+  filter: SearchProductCampaignFilter
+}
+
+type SearchProductCampaignMinMaxRangeField {
+  max: Float
+  min: Float
+}
+
+type SearchProductCampaignOffer {
+  availableSalesChannelIds: [String!]
+  currencyCodes: [String!]
+  id: String!
+}
+
+type SearchProductCampaignPrice {
+  campaignId: String
+  campaignPrice: Float
+}
+
+type SearchProductCampaignTieredDiscount {
+  filters: [SearchProductCampaignFilter!]
+  isApplyByCartAmount: Boolean
+  rules: [SearchProductCampaignTieredDiscountRule!]!
+  shouldMatchAllConditions: Boolean
+}
+
+type SearchProductCampaignTieredDiscountRule {
+  amount: Float!
+  lineItemQuantityRange: SearchProductCampaignMinMaxRangeField
+  priceRange: SearchProductCampaignMinMaxRangeField
+}
+
+type SearchProductCustomerReviewStar {
+  count: Float!
+  star: Float!
+}
+
+type SearchProductGroup {
+  groupKey: String!
+  id: String!
+  name: String!
+  order: SearchProductGroupOrder
+  translations: [SearchProductGroupTranslation!]
+  values: [SearchProductGroupValueType!]!
+}
+
+type SearchProductGroupOrder {
+  orderAttributeId: String
+  value: String!
+}
+
+type SearchProductGroupTranslation {
+  locale: String!
+  values: [SearchProductGroupValueTranslation!]
+}
+
+type SearchProductGroupValueTranslation {
+  id: String!
+  name: String
+  value: String
+}
+
+type SearchProductGroupValueType {
+  id: String!
+  name: String!
+  value: String!
+}
+
+type SearchProductImage {
+  fileName: String
+  id: String!
+  isMain: Boolean
+  isVideo: Boolean
+  order: Float!
+}
+
+type SearchProductPrice {
+  buyPrice: Float
+  campaignPrice: SearchProductCampaignPrice
+  currency: String
+  currencyCode: String
+  currencySymbol: String
+  discountPrice: Float
+  priceListId: String
+  sellPrice: Float!
+  unitPrice: Float
+}
+
+type SearchProductProductBaseUnit {
+  baseAmount: Float!
+  type: ProductUnitTypeEnum!
+  unit: SearchProductProductUnit
+}
+
+type SearchProductProductUnit {
+  id: String!
+  name: String!
+  translations: [ProductUnitTranslation!]
+}
+
+type SearchProductSalesChannel {
+  id: String!
+  maxQuantityPerCart: Float
+  minQuantityPerCart: Float
+  productVolumeDiscountId: String
+  quantitySettings: [Float!]
+  status: SalesChannelStatusEnum!
+}
+
+type SearchProductStockLocation {
+  stockCount: Float!
+  stockLocationId: String!
+}
+
+type SearchProductTag {
+  id: String!
+  name: String!
+  translations: [ProductTagTranslation!]
+}
+
+type SearchProductVariantType {
+  order: Float!
+  variantType: SearchVariantType!
+  variantValueIds: [String!]!
+}
+
+type SearchVariant {
+  attributes: [SearchProductAttributeValue!]
+  barcodeList: [String!]
+  baseBundlePrices: [SearchProductPrice!]
+  bundleSettings: BundleSettingsModel
+  deleted: Boolean
+  id: String!
+  images: [SearchProductImage!]
+  isActive: Boolean
+  prices: [SearchProductPrice!]
+  sellIfOutOfStock: Boolean
+  sku: String
+  stocks: [SearchProductStockLocation!]
+  unit: VariantUnitModel
+  variantValues: [SearchVariationValueRelation!]
+  weight: Float
+}
+
+type SearchVariantType {
+  id: String!
+  name: String!
+  selectionType: String!
+  translations: [VariantTypeTranslation!]
+  values: [SearchVariantValue!]!
+}
+
+type SearchVariantValue {
+  colorCode: String
+  id: String!
+  name: String!
+  thumbnailImageId: String
+}
+
+type SearchVariationValueRelation {
+  variantTypeId: String!
+  variantValueId: String!
+}
+
+type ShippingSettings {
+  createdAt: Timestamp
+  deleted: Boolean!
+  id: ID!
+  isPassive: Boolean
+  localDeliverySettings: LocalDeliverySettings
+  order: Float
+  salesChannelId: String!
+  shippingZones: [ShippingZone!]!
+  stockLocations: [ShippingSettingsStockLocation!]
+  type: ShippingSettingsType!
+  updatedAt: Timestamp
+  zoneName: String!
+  zoneRate: [ShippingZoneRate!]!
+}
+
+type ShippingSettingsStockLocation {
+  order: Float!
+  stockLocationId: String!
+}
+
+"""ShippingSettingsType"""
+enum ShippingSettingsType {
+  LOCAL_DELIVERY
+  SHIPMENT
+}
+
+type ShippingZone {
+  countryId: String!
+  postalCodes: [String!]
+  states: [ShippingZoneState!]
+}
+
+type ShippingZoneCity {
+  districts: [ShippingZoneDistrict!]
+  id: String!
+}
+
+type ShippingZoneDistrict {
+  id: String!
+  regions: [ShippingZoneRegion!]!
+}
+
+type ShippingZoneRate {
+  condition: ShippingZoneRateCondition
+  createdAt: Timestamp
+  currency: String
+  currencyCode: String
+  currencySymbol: String
+  deleted: Boolean!
+  id: ID!
+  price: Float!
+  priceListId: String
+  rateName: String!
+  updatedAt: Timestamp
+}
+
+type ShippingZoneRateCondition {
+  maxAmount: Float
+  minAmount: Float
+  type: ShippingZoneRateConditionType!
+}
+
+"""ShippingZoneRateConditionType"""
+enum ShippingZoneRateConditionType {
+  BASED_ON_ITEM_WEIGHT
+  BASED_ON_ORDER_PRICE
+}
+
+type ShippingZoneRegion {
+  createdAt: Timestamp
+  deleted: Boolean!
+  id: ID!
+  name: String!
+  updatedAt: Timestamp
+}
+
+type ShippingZoneState {
+  cities: [ShippingZoneCity!]
+  id: String!
+  postalCodes: [String!]
+}
+
+type SimpleCategory {
+  createdAt: Timestamp
+  deleted: Boolean!
+  id: ID!
+  """It is the name of the category in which the product is located."""
+  name: String!
+  """It is the id of the superclass category of the category."""
+  parentId: String
+  updatedAt: Timestamp
+}
+
+type SimpleProductBrand {
+  createdAt: Timestamp
+  deleted: Boolean!
+  id: ID!
+  """The name of the product's brand."""
+  name: String!
+  updatedAt: Timestamp
+}
+
+type SimpleProductTag {
+  createdAt: Timestamp
+  deleted: Boolean!
+  id: ID!
+  """The name of the product's tag."""
+  name: String!
+  updatedAt: Timestamp
+}
+
+"""Timeline Source Types"""
+enum SourceTypeEnum {
+  CUSTOMER
+  EMAIL
+  GIFT_CARD
+  INVENTORY
+  MERCHANT
+  ORDER
+  PARTNER
+  PRODUCT
+  STAFF
+  STOREFRONT
+}
+
+type State {
+  """ID indicating which country the state belongs to."""
+  countryId: String!
+  createdAt: Timestamp
+  deleted: Boolean!
+  id: ID!
+  """Shows spellings of state name in different languages."""
+  locationTranslations: LocationTranslations
+  """State's name."""
+  name: String!
+  """Indicates the name of the state in the local language."""
+  native: String
+  """The two-letter state code corresponding to the state."""
+  stateCode: String
+  updatedAt: Timestamp
+}
+
+type StockLocation {
+  """It is the address information of the stock location."""
+  address: StockLocationAddress
+  createdAt: Timestamp
+  deleted: Boolean!
+  """It is the delivery time of the stock location."""
+  deliveryTime: StockLocationDeliveryTimeEnum
+  """It is the description of the stock location."""
+  description: String
+  id: ID!
+  isRemindOutOfStockEnabled: Boolean
+  """It is the name of the stock location."""
+  name: String!
+  outOfStockMailList: [String!]
+  """Translations for the stock location."""
+  translations: [StockLocationTranslation!]
+  """It is the type enum of the stock location."""
+  type: StockLocationTypeEnum
+  updatedAt: Timestamp
+}
+
+type StockLocationAddress {
+  """It is the full address of the stock location."""
+  address: String
+  """It is the city information of the address."""
+  city: StockLocationAddressCity
+  """It is the country information of the address."""
+  country: StockLocationAddressCountry
+  """It is the district information of the address."""
+  district: StockLocationAddressDistrict
+  """It is the phone number of the address."""
+  phone: String
+  """It is the postal code of the address."""
+  postalCode: String
+  """It is the state information of the address."""
+  state: StockLocationAddressState
+}
+
+type StockLocationAddressCity {
+  """It is the code of the city of the address."""
+  code: String
+  """It is the id of the city of the address."""
+  id: String
+  """It is the name of the city of the address."""
+  name: String!
+}
+
+type StockLocationAddressCountry {
+  """It is the code of the country of the address."""
+  code: String
+  """It is the id of the country of the address."""
+  id: String
+  """It is the code of the country of the address."""
+  iso2: String
+  """It is the code of the country of the address."""
+  iso3: String
+  """It is the name of the country of the address."""
+  name: String!
+}
+
+type StockLocationAddressDistrict {
+  """It is the code of the district of the address."""
+  code: String
+  """It is the id of the district of the address."""
+  id: String
+  """It is the name of the district of the address."""
+  name: String
+}
+
+type StockLocationAddressState {
+  """It is the code of the state of the address."""
+  code: String
+  """It is the id of the state of the address."""
+  id: String
+  """It is the name of the state of the address."""
+  name: String
+}
+
+"""Stock Location Delivery Time Types"""
+enum StockLocationDeliveryTimeEnum {
+  TWO_IN_FOUR_DAYS
+  WITHIN_FOUR_HOURS
+  WITHIN_ONE_HOUR
+  WITHIN_PLUS_FIVE_DAYS
+  WITHIN_TWENTY_FOUR_HOURS
+  WITHIN_TWO_HOURS
+}
+
+type StockLocationTranslation {
+  """It is the description information of the translation."""
+  description: String
+  """It is the name information of the translation."""
+  locale: String!
+}
+
+"""Stock Location Types"""
+enum StockLocationTypeEnum {
+  PHYSICAL
+  VIRTUAL
+}
+
+type Storefront {
+  createdAt: Timestamp
+  deleted: Boolean!
+  id: ID!
+  """The storefront's name."""
+  name: String!
+  """The storefront's name."""
+  routings: [StorefrontRouting!]!
+  salesChannelId: String!
+  updatedAt: Timestamp
+}
+
+type StorefrontDynamicCurrencySettings {
+  """One of '.x0' | '.x9' | '.00' | '.90' | '.99' | '0.00' | '9.90'"""
+  roundingFormat: String
+  targetCurrencyCode: String!
+  targetCurrencySymbol: String
+}
+
+type StorefrontJSScript {
+  """The id of the logged in application."""
+  authorizedAppId: String
+  """The type of javascript script content."""
+  contentType: StorefrontJSScriptContentTypeEnum
+  createdAt: Timestamp
+  deleted: Boolean!
+  """The type of javascript script content."""
+  fileName: String
+  id: ID!
+  """Shows the availability status of the storefront."""
+  isActive: Boolean!
+  """
+  Indicates if the script has a high priority and should be executed before others.
+  """
+  isHighPriority: Boolean
+  """The storefront javascript script's name."""
+  name: String!
+  """The order of the script to be executed."""
+  order: Float
+  """The storefront javascript script's content."""
+  scriptContent: String!
+  """The store app's id."""
+  storeAppId: String
+  """The storefront's id."""
+  storefrontId: String!
+  updatedAt: Timestamp
+}
+
+enum StorefrontJSScriptContentTypeEnum {
+  FILE
+  SCRIPT
+}
+
+input StorefrontJSScriptInput {
+  contentType: StorefrontJSScriptContentTypeEnum!
+  fileName: String
+  isHighPriority: Boolean
+  name: String!
+  scriptContent: String!
+  storefrontId: String!
+}
+
+type StorefrontPolicy {
+  createdAt: Timestamp
+  currentVersionId: String!
+  deleted: Boolean!
+  id: ID!
+  locale: String!
+  name: String!
+  sendEmail: Boolean!
+  slug: String!
+  storefrontId: String!
+  storefrontRoutings: [StorefrontPolicyRouting!]!
+  type: StorefrontPolicyTypeEnum!
+  updatedAt: Timestamp
+}
+
+input StorefrontPolicyInput {
+  content: String!
+  createdAt: Timestamp
+  deleted: Boolean = false
+  id: ID
+  locale: String!
+  name: String!
+  sendEmail: Boolean!
+  slug: String!
+  storefrontId: String!
+  storefrontRoutings: [StorefrontPolicyRoutingInput!]!
+  type: StorefrontPolicyTypeEnum!
+  updatedAt: Timestamp
+}
+
+type StorefrontPolicyRouting {
+  storefrontId: String!
+  storefrontRoutingId: String!
+}
+
+input StorefrontPolicyRoutingInput {
+  storefrontId: String!
+  storefrontRoutingId: String!
+}
+
+enum StorefrontPolicyTypeEnum {
+  IMPRINT
+  OTHER
+  PRIVACY_POLICY
+  RETURN_POLICY
+  SHIPPING_POLICY
+  TERMS_OF_SERVICE
+}
+
+type StorefrontRouting {
+  countryCodes: [String!]
+  createdAt: Timestamp
+  currencyCode: String
+  currencySymbol: String
+  deleted: Boolean!
+  domain: String
+  dynamicCurrencySettings: StorefrontDynamicCurrencySettings
+  id: ID!
+  locale: String!
+  path: String
+  priceListId: String
+  updatedAt: Timestamp
+}
+
+input StringFilterInput {
+  """`equal`. The filter used for equality."""
+  eq: String
+  """Returns a boolean indicating whether a specified value is in an array."""
+  in: [String!]
+  """
+  It allows using regex code in queries.
+  The following example matches all documents where the name field is like "%AAA":
+  :::note
+  Example usage: merchantId: { like: AAA }.
+  :::
+  """
+  like: String
+  """`not equal`. The filter used for not equality."""
+  ne: String
+  """
+  Returns a boolean indicating whether a specified value is not in an array.
+  """
+  nin: [String!]
+}
+
+enum SubscriptionCodeEnum {
+  CUSTOM
+  EXTENSION
+  FREEMIUM
+  GROW
+  MARKETING_CORE
+  MARKETING_FREE
+  MARKETING_PRO
+  ONE_TIME
+  PREMIUM
+  SCALE
+  SCALE_PLUS
+  START
+  TRIAL
+}
+
+enum SubscriptionPeriodEnum {
+  MONTHLY
+  ONE_TIME
+  YEARLY
+}
+
+enum SubscriptionPriceCurrencyEnum {
+  EUR
+  TRY
+  USD
+}
+
+type TaxSettings {
+  countryId: String!
+  createdAt: Timestamp
+  deleted: Boolean!
+  giftPackageTaxRates: [TaxSettingsGiftPackageTaxRate!]
+  id: ID!
+  productOverrides: [TaxSettingsProductOverride!]
+  rates: [TaxSettingsRate!]
+  shippingTaxRates: [TaxSettingsShippingTaxRate!]
+  taxRate: Float!
+  updatedAt: Timestamp
+}
+
+type TaxSettingsGiftPackageTaxRate {
+  stateId: String
+  taxRate: Float!
+}
+
+input TaxSettingsGiftPackageTaxRateInput {
+  stateId: String
+  taxRate: Float!
+}
+
+input TaxSettingsInput {
+  countryId: String!
+  createdAt: Timestamp
+  deleted: Boolean = false
+  giftPackageTaxRates: [TaxSettingsGiftPackageTaxRateInput!]
+  id: ID
+  productOverrides: [TaxSettingsProductOverrideInput!]!
+  rates: [TaxSettingsRateInput!]
+  shippingTaxRates: [TaxSettingsShippingTaxRateInput!]
+  taxRate: Float!
+  updatedAt: Timestamp
+}
+
+type TaxSettingsProductOverride {
+  productTagIds: [String!]!
+  stateId: String
+  taxRate: Float!
+}
+
+input TaxSettingsProductOverrideInput {
+  productTagIds: [String!]!
+  stateId: String
+  taxRate: Float!
+}
+
+type TaxSettingsRate {
+  stateId: String!
+  taxRate: Float!
+}
+
+input TaxSettingsRateInput {
+  stateId: String!
+  taxRate: Float!
+}
+
+type TaxSettingsShippingTaxRate {
+  stateId: String
+  taxRate: Float!
+}
+
+input TaxSettingsShippingTaxRateInput {
+  stateId: String
+  taxRate: Float!
+}
+
+type Terminal {
+  branchId: String!
+  createdAt: Timestamp
+  deleted: Boolean!
+  id: ID!
+  name: String!
+  updatedAt: Timestamp
+}
+
+input TieredDiscountInput {
+  filters: [CampaignFilterInput!]
+  isApplyByCartAmount: Boolean
+  rules: [TieredDiscountRuleInput!]!
+  shouldMatchAllConditions: Boolean
+}
+
+input TieredDiscountRuleInput {
+  amount: Float!
+  lineItemQuantityRange: CampaignMinMaxRangeFieldInput
+  priceRange: CampaignMinMaxRangeFieldInput
+}
+
+input TimelineInput {
+  """The message you want to add"""
+  message: String!
+  """
+  Indicates which source the message added to the timeline belongs to. For example, if a message is added to the timeline for an order, sourceId is the id of the order. The same is true for the customer.
+  """
+  sourceId: String!
+  """The message source type you want to add."""
+  sourceType: SourceTypeEnum!
+}
+
+"""
+The javascript `Date` as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
+"""
+scalar Timestamp
+
+type Town {
+  createdAt: Timestamp
+  deleted: Boolean!
+  """ID indicating which district the town belongs to."""
+  districtId: String!
+  id: ID!
+  """Town's name."""
+  name: String!
+  """Specifies the order of towns."""
+  order: Float
+  updatedAt: Timestamp
+}
+
+type TrackingInfo {
+  """It is the barcode of the order package."""
+  barcode: String
+  """It is the name of the cargo company."""
+  cargoCompany: String
+  """
+  It is the key of the cargo company which can be retrieved via listCargoCompany query.
+  """
+  cargoCompanyId: String
+  """
+  Indicates whether the notification is sent to the customer after the cargo is delivered. **isSendNotification** returns true if the notification is sent.
+  """
+  isSendNotification: Boolean
+  """It is the tracking link of the order package."""
+  trackingLink: String
+  """It is the tracking number of the order package."""
+  trackingNumber: String
+}
+
+input TrackingInfoDetailInput {
+  """It is the barcode of the order package."""
+  barcode: String
+  """It is the name of the cargo company."""
+  cargoCompany: String
+  """
+  It is the key of the cargo company which can be retrieved via listCargoCompany query.
+  """
+  cargoCompanyId: String
+  """
+  If the customer is to be informed after the cargo is delivered, this field can be sent as `true`.
+  """
+  isSendNotification: Boolean
+  """It is the tracking link of the order package."""
+  trackingLink: String
+  """It is the tracking number of the order package."""
+  trackingNumber: String
+}
+
+enum TransactionCardAssociationEnum {
+  AMERICAN_EXPRESS
+  MASTER_CARD
+  TROY
+  VISA
+}
+
+enum TransactionCardTypeEnum {
+  CREDIT
+  DEBIT
+  PREPAID
+}
+
+type TransactionError {
+  code: String
+  declineCode: String
+  message: String
+}
+
+type TransactionInstallmentPrice {
+  installmentCount: Float
+  installmentPrice: Float
+  originalRate: Float
+  rate: Float
+  totalPrice: Float
+}
+
+type TransactionPaymentMethodDetail {
+  bankName: String
+  binNumber: String!
+  cardAssociation: TransactionCardAssociationEnum
+  cardFamily: String
+  cardType: TransactionCardTypeEnum
+  installment: TransactionInstallmentPrice
+  lastFourDigits: String!
+  paymentMethodName: String
+  threeDSecure: Boolean!
+}
+
+enum TransactionStatusEnum {
+  AUTHORIZED
+  FAILED
+  PENDING
+  SUCCESS
+}
+
+enum TransactionTypeEnum {
+  REFUND
+  SALE
+  VOID
+}
+
+input UpdateOrderAddressesInput {
+  """The address information to which the order will be billing."""
+  billingAddress: OrderAddressInput
+  """
+  It is the order id for which the invoice is issued.
+   * Is the entered id must be exist in ikas.
+  """
+  orderId: String!
+  """The address information to which the order will be shipping."""
+  shippingAddress: OrderAddressInput
+}
+
+input UpdateOrderInput {
+  editReason: String!
+  orderId: String!
+  orderLineItems: [OrderLineItemInput!]!
+  restockItems: Boolean! = true
+}
+
+input UpdateOrderPackageStatusInput {
+  """
+  It is the order id whose status will be updated.
+   * Is the entered id must be exist in ikas.
+  """
+  orderId: String!
+  """
+  A list of package objects, each containing input about an package in the order.
+  """
+  packages: [UpdateOrderPackageStatusPackagesInput!]!
+  """It is the source id of the order."""
+  sourceId: String
+}
+
+input UpdateOrderPackageStatusPackagesInput {
+  """
+  If the package fulfill status is an `ERROR` , this field can be sent as full.
+  """
+  errorMessage: String
+  """
+  It is the package id whose status will be updated.
+   * Is the entered id must be exist in ikas.
+  """
+  packageId: String!
+  """It is the source id of the package."""
+  sourceId: String
+  """It is the status enum  of the will be updated package"""
+  status: OrderPackageFulfillStatusEnum!
+  """It is the tracking information of the package"""
+  trackingInfo: TrackingInfoDetailInput
+}
+
+input UpdateOrderTagInput {
+  orderId: String!
+  orderTagId: String!
+}
+
+input UpdateProductSalesChannelStatusInput {
+  """Status of the product in the updated sales channels."""
+  active: Boolean!
+  """Id of the product to update its sales channels."""
+  productId: String!
+}
+
+enum UserAgentDeviceType {
+  CAMERA
+  CAR
+  CONSOLE
+  DESKTOP
+  FEATURE_PHONE
+  OTHER
+  PERIPHERAL
+  PHABLET
+  PORTABLE_MEDIA_PLAYER
+  SMARTPHONE
+  SMART_DISPLAY
+  SMART_SPEAKER
+  TABLET
+  TELEVISION
+  WEARABLE
+}
+
+type Variant {
+  """List of variant attributes."""
+  attributes: [ProductAttributeValue!]
+  """List of barcode for the variant."""
+  barcodeList: [String!]
+  """Show the product bundle settings."""
+  bundleSettings: BundleSettingsModel
+  createdAt: Timestamp
+  deleted: Boolean!
+  """Id of product file."""
+  fileId: String
+  """Hs code of the variant."""
+  hsCode: String
+  id: ID!
+  """List of images for variant."""
+  images: [ProductImage!]
+  """Whether the variant is active or not."""
+  isActive: Boolean!
+  """List of prices for the variant."""
+  prices: [ProductPrice!]!
+  """Whether to sell if variant is out of stock or not."""
+  sellIfOutOfStock: Boolean
+  """SKU of the variant."""
+  sku: String
+  stocks: [ProductStockLocation!]
+  """Translations for the product."""
+  unit: VariantUnitModel
+  updatedAt: Timestamp
+  """List of variant value ids."""
+  variantValueIds: [VariantValueRelation!]
+  """Weight of the variant."""
+  weight: Float
+}
+
+input VariantInput {
+  attributes: [ProductAttributeValueInput!]
+  barcodeList: [String!]
+  bundleSettings: BundleSettingsInput
+  createdAt: Timestamp
+  deleted: Boolean = false
+  fileId: String
+  hsCode: String
+  id: ID
+  images: [ProductImageInput!]
+  isActive: Boolean! = true
+  prices: [ProductPriceInput!]!
+  sellIfOutOfStock: Boolean
+  sku: String
+  unit: VariantUnitModelInput
+  updatedAt: Timestamp
+  variantValueIds: [VariantValueRelationInput!]
+  weight: Float
+}
+
+input VariantPriceInput {
+  deleted: Boolean
+  """
+  New prices info to update. This operation overrides price objects given here.
+  """
+  price: ProductPriceInput!
+  """Id of the corresponding product."""
+  productId: String!
+  """Id of the variant that's prices to be updated."""
+  variantId: String!
+}
+
+"""Variant Selection Types"""
+enum VariantSelectionTypeEnum {
+  CHOICE
+  COLOR
+}
+
+type VariantType {
+  createdAt: Timestamp
+  deleted: Boolean!
+  id: ID!
+  """
+  Product variant type name information. **For example: Size, Color, Number etc.**.It can be a maximum of 100 characters.
+  """
+  name: String!
+  """Product variant type selection type. It can be choice or color."""
+  selectionType: VariantSelectionTypeEnum!
+  """It is the translation information of the product variant types."""
+  translations: [VariantTypeTranslation!]
+  updatedAt: Timestamp
+  """
+  Variant values used in Variant type. ** For example, variant type: Size. Variant values can be thought of as S, M, L, XL. **It is unique according to the value name.Values array size must have at least one element.
+  """
+  values: [VariantValue!]!
+}
+
+input VariantTypeInput {
+  createdAt: Timestamp
+  deleted: Boolean = false
+  id: ID
+  """
+  Product variant type name information. **For example: Size, Color, Number etc.**.It can be a maximum of 100 characters.
+  """
+  name: String!
+  """Product variant type selection type. It can be choice or color."""
+  selectionType: VariantSelectionTypeEnum!
+  """It is the translation information of the product variant types."""
+  translations: [VariantTypeTranslationInput!]
+  updatedAt: Timestamp
+  """
+  Variant values used in Variant type. ** For example, variant type: Size. Variant values can be thought of as S, M, L, XL. **It is unique according to the value name.Values array size must have at least one element.
+  """
+  values: [VariantValueInput!]!
+}
+
+type VariantTypeTranslation {
+  """It is the name information of the translation."""
+  locale: String!
+  """It is the information in which language the translation is saved."""
+  name: String
+  """It is the translation information of the values of variant types."""
+  values: [VariantValueTranslation!]
+}
+
+input VariantTypeTranslationInput {
+  """It is the name information of the translation."""
+  locale: String!
+  """It is the information in which language the translation is saved."""
+  name: String
+  """It is the translation information of the values of variant types."""
+  values: [VariantValueTranslationInput!]
+}
+
+type VariantUnitModel {
+  """Amount of the product unit."""
+  amount: Float
+  """Type of the product unit."""
+  type: ProductUnitTypeEnum!
+}
+
+input VariantUnitModelInput {
+  amount: Float!
+  type: ProductUnitTypeEnum!
+}
+
+type VariantValue {
+  """
+  It is the color code information of the variant values. It can be a maximum of 7 characters.
+  """
+  colorCode: String
+  createdAt: Timestamp
+  deleted: Boolean!
+  id: ID!
+  """
+  It is the name information of the values used in the Variant type. Value information of Variant type is unique according to name.It can be a maximum of 100 characters.
+  """
+  name: String!
+  """It is the image information of the variant values."""
+  thumbnailImageId: String
+  updatedAt: Timestamp
+}
+
+input VariantValueInput {
+  """
+  It is the color code information of the variant values. It can be a maximum of 7 characters.
+  """
+  colorCode: String
+  createdAt: Timestamp
+  deleted: Boolean = false
+  id: ID
+  """
+  It is the name information of the values used in the Variant type. Value information of Variant type is unique according to name.It can be a maximum of 100 characters.
+  """
+  name: String!
+  """It is the image information of the variant values."""
+  thumbnailImageId: String
+  updatedAt: Timestamp
+}
+
+type VariantValueRelation {
+  """Id of variant type."""
+  variantTypeId: String!
+  """iD of the variant value."""
+  variantValueId: String!
+}
+
+input VariantValueRelationInput {
+  variantTypeId: String!
+  variantValueId: String!
+}
+
+type VariantValueTranslation {
+  id: String!
+  """It is the information in which language the translation is saved."""
+  name: String
+}
+
+input VariantValueTranslationInput {
+  id: String!
+  """It is the information in which language the translation is saved."""
+  name: String
+}
+
+type Vendor {
+  address: String
+  company: String
+  createdAt: Timestamp
+  deleted: Boolean!
+  email: String
+  id: ID!
+  name: String!
+  phone: String
+  staffName: String
+  status: VendorStatusEnum
+  taxNumber: String
+  taxOffice: String
+  updatedAt: Timestamp
+}
+
+input VendorInput {
+  address: String
+  company: String
+  createdAt: Timestamp
+  deleted: Boolean = false
+  email: String
+  id: ID
+  name: String!
+  phone: String
+  staffName: String
+  status: VendorStatusEnum
+  taxNumber: String
+  taxOffice: String
+  updatedAt: Timestamp
+}
+
+"""Vendor Status Enum"""
+enum VendorStatusEnum {
+  ACTIVE
+  ARCHIVED
+}
+
+type VolumeDiscountMinMaxRangeField {
+  """
+  Indicates the minimum amount of the product to be included in the rule.
+  """
+  max: Float
+  """
+  Indicates the minimum amount of the product to be included in the rule.
+  """
+  min: Float!
+}
+
+input VolumeDiscountMinMaxRangeFieldInput {
+  """
+  Indicates the maximum amount of the product to be included in the rule.
+  """
+  max: Float
+  """
+  Indicates the minimum amount of the product to be included in the rule.
+  """
+  min: Float!
+}
+
+"""**Webhook** model description."""
+type Webhook {
+  createdAt: Timestamp
+  deleted: Boolean!
+  """URL address that webhooks will be pushed."""
+  endpoint: String!
+  id: ID!
+  """Scope of webhook that defines content of webhook."""
+  scope: String!
+  updatedAt: Timestamp
+}
+
+input WebhookInput {
+  """`endpoint` must be a valid `URL` address."""
+  endpoint: String!
+  """
+  You can filter webhooks by using specific **SalesChannel** id. Please check `listSalesChannel` query to retrieve active sales channel ids.
+  """
+  salesChannelIds: [String!]
+  """
+  Valid scopes are `store/order/created` `store/order/updated` `store/product/created` `store/product/updated` `store/customer/created` `store/customer/updated` `store/customerFavoriteProducts/created` `store/customerFavoriteProducts/updated` `store/stock/created` `store/stock/updated`.
+  """
+  scopes: [String!]!
+}

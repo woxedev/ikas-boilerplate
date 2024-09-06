@@ -1,0 +1,22 @@
+{
+  "name": "ikas",
+  "module": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "bun run src/index.ts",
+    "codegen": "graphql-codegen --config ./src/modules/ikas/codegen.ts"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^5.0.2",
+    "@graphql-codegen/schema-ast": "^4.1.0",
+    "@types/bun": "latest",
+    "@0no-co/graphqlsp": "^1.12.13"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "axios": "^1.7.5",
+    "fastify": "^4.28.1"
+  }
+}
